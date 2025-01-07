@@ -2660,6 +2660,7 @@ function MainView({ setPage, page }) {
                   className="btn-blue btn btn-add btn-applicant"
                   onClick={() => {
                     handleShow();
+                    handleSlotCheck();
                   }}
                 >
                   Add Applicant
