@@ -949,7 +949,7 @@ function MainView({ setPage, page }) {
     console.log(data);
     const isPreKinderSlotsAvailable =
       data.filter(
-        (el) => el["level_applying"] == "Pre Kinder" && el["slot_full"] == false
+        (el) => el["level_applying"] == "Pre-Kinder" && el["slot_full"] == false
       ).length > 0;
     const isKinderSlotsAvailable =
       data.filter(
