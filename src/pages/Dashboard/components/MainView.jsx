@@ -18,6 +18,7 @@ import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
 
 function MainView({ setPage, page }) {
+  const [greeting, setGreeting] = useState("");
   const [cancelReasonString, setCancelReasonString] = useState("");
   const [application, setApplication] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -157,6 +158,29 @@ function MainView({ setPage, page }) {
     });
     setIsLoading(false);
   };
+
+  const updateGreeting = () => {
+    const hour = new Date().getHours();
+    let newGreeting = "";
+    if (hour >= 5 && hour < 12) {
+      newGreeting = "Good morning";
+    } else if (hour >= 12 && hour < 17) {
+      newGreeting = "Good afternoon";
+    } else {
+      newGreeting = "Good evening";
+    }
+     // Debug log
+    setGreeting(newGreeting);
+    console.log("Setting greeting to:", greeting);
+  };
+
+  // Use useEffect to initialize the greeting and set up the interval
+  useEffect(() => {
+    updateGreeting(); // Set initial greeting
+    const timer = setInterval(updateGreeting, 10000); // Update every 10 seconds
+
+    return () => clearInterval(timer); // Cleanup the interval on component unmount
+  }, []);
 
   const handleDeleteUploadedFiles = async (
     requirementType,
@@ -2435,7 +2459,7 @@ function MainView({ setPage, page }) {
                 />
                 <div className="welcome-text">
                   <h2>Welcome back!</h2>
-                  <h3>Good morning, {user["firstName"]}!</h3>
+                  <h3>1, {user["firstName"]}!</h3>
                 </div>
               </div>
               <div className="main-header">
