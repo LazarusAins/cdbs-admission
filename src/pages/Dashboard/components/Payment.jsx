@@ -87,25 +87,37 @@ function Payment({ setPage, dataIndex, applicationId, paymethodId }) {
                 ? "Payment Instructions for Admission Fee (Cash Payment)"
                 : "Pay through UnionBank Bills Payment"}
             </h1>
-            <h3>
+            <h3 style={{ textAlign: "left" }}>
               {paymethodId == 1 || paymentId == 1
                 ? "To complete the admission process, please follow these steps for cash payment:"
-                : "Click here to download the app: https://www.unionbankph.com/unionbankonline/pay-bills"}
+                : (
+                  <>
+                    1. Download the app through this link :&nbsp;
+                    <a
+                      href="https://www.unionbankph.com/unionbankonline/pay-bills"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#007bff", textDecoration: "underline" }}
+                    >
+                      UnionBank 
+                    </a>
+                  </>
+                )}
             </h3>
-            <h3>
+            <h3 style={{ textAlign: "left" }}>
               {paymethodId == 1 || paymentId == 1
                 ? "1. Payment Location: Cashier, Caritas Don Bosco School Lobby"
-                : "Once the UB account is created, GO to ''Pay Bills'', ''Select Biller'', and search ''Caritas Don Bosco School''."}
+                : "2. Once the UB account is created, go to ''Pay Bills'', ''Select Biller'', and search ''Caritas Don Bosco School''."}
             </h3>
-            <h3>
+            <h3 style={{ textAlign: "left" }}>
               {paymethodId == 1 || paymentId == 1
                 ? "2. Payment Hours: Monday to Friday: 7:00 AM - 4:00; Saturday, 8:00AM - 12:00 PM."
-                : "Ready to use for any CDBS transactions."}
+                : "The account will be ready to use for any CDBS transaction."}
             </h3>
-            <h3>
+            <h3 style={{ textAlign: "left" }}>
               {paymethodId == 1 || paymentId == 1
                 ? " 3. A receipt will be issued as proof of payment please keep it for reference."
-                : ""}
+                : "3. Once payment is made, kindly enter the reference number below."}
             </h3>
 
             <hr className="payment-line" />

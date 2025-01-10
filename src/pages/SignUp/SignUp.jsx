@@ -3,7 +3,7 @@ import logo from "../../assets/images/logo.png";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const [selection, setSelection] = useState("");
+  const [selection, setSelection] = useState("parent");
   const [formData, setFormData] = useState({
     fname: "",
     mname: "",
@@ -22,7 +22,7 @@ function SignUp() {
         <img src={logo} className="logo" />
         <div className="sign-up-container">
           <h3>Get Started</h3>
-          <h4 className="subtext">
+          {/*<h4 className="subtext">
             Please choose <span>Account Type</span>
           </h4>
           <div className="sign-up-text">
@@ -52,7 +52,7 @@ function SignUp() {
             >
               Guardian
             </div>
-          </div>
+          </div>*/}
           <div className="btn-container create-btn">
             <button
               className={`btn ${selection == "" ? "btn-grey" : "btn-blue"}`}
@@ -63,7 +63,7 @@ function SignUp() {
                 navigate(`/register/${selection}`);
               }}
             >
-              Create Account
+              Register
             </button>
           </div>
           <p className="footer-text">
