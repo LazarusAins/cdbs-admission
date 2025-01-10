@@ -265,8 +265,11 @@ function Requirement({
                 </span>
               </div>
             ))}
+            
 
-            {mainTitle != "Recommendation Letter"
+
+
+            {/*mainTitle != "Recommendation Letter"
               ? uploadedFiles.map((el, i) => (
                   <div className="upload-view-btn-container" key={i}>
                     <a
@@ -311,7 +314,57 @@ function Requirement({
                     </button>
                   </div>
                 ))
-              : null}
+              : null*/}
+
+              {mainTitle !== "Recommendation Letter"
+                ? uploadedFiles.map((el, i) => (
+                    <div className="upload-view-btn-container" key={i}>
+                      <a
+                        id="view-upload"
+                        href={
+                          Array.isArray(el.document_url)
+                            ? el.document_url[0]
+                            : el.document_url.replace(/[\[\]"']/g, "")
+                        }
+                        key={i}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="btn-view">
+                          <img src={showEye} /> Uploaded File
+                        </span>
+                      </a>
+                      {(el.document_status !== "accepted") && (  // Check if file is not approved or hasn't been uploaded yet
+                        <button
+                          className="close-btn"
+                          onClick={async () => {
+                            var result = await Swal.fire({
+                              title: "Delete this uploaded file?",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonText: "Yes",
+                              cancelButtonColor: "No",
+                            });
+                            if (result.isConfirmed) {
+                              await handleDeleteUploadedFiles(
+                                el.requirements_type,
+                                el.admission_id,
+                                el.required_doc_id
+                              );
+
+                              fetchAdmissions();
+                            } else {
+                              return;
+                            }
+                          }} // Function to remove file
+                        >
+                          &times;
+                        </button>
+                      )}
+                    </div>
+                  ))
+                : null}
+
           </div>
 
           <div className="align-buttons-self">
