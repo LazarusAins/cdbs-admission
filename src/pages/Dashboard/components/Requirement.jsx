@@ -25,9 +25,9 @@ function Requirement({
   const { admissions } = useContext(AdmissionsContext);
 
   const hiddenFileInput = useRef(null);
-
   let uploadedFiles = [];
   let type;
+  let docStatus;
   if (mainTitle == "Birth Certificate (PSA Copy)") {
     type = "birthCert";
     uploadedFiles = [
@@ -84,6 +84,7 @@ function Requirement({
         "db_required_documents_table"
       ].filter((el) => el.requirements_type === 14),
     ];
+    console.log(uploadedFiles)
   } else if (mainTitle == "Alien Certificate of Registration") {
     type = "alienCert";
     uploadedFiles = [
@@ -369,7 +370,7 @@ function Requirement({
         </div>
       </div>
 
-      {mainTitle != "Recommendation Letter" ? (
+      {/*mainTitle != "Recommendation Letter" && uploadedFiles.length ==0 ? (
         <div className="attachment-icon">
           <input
             ref={hiddenFileInput}
@@ -391,7 +392,37 @@ function Requirement({
             onClick={handleClick}
           />
         </div>
-      ) : null}
+      ) : null*/
+      }
+
+      {mainTitle !== "Recommendation Letter" && (
+        (uploadedFiles.length === 0 || uploadedFiles.some((file) => file.document_status === "rejected")) && (
+          <div className="attachment-icon">
+            <input
+              ref={hiddenFileInput}
+              className="attach"
+              style={{ marginTop: "70px", marginBottom: "70px" }}
+              type="file"
+              accept=".png, .jpeg, .jpg, .pdf"
+              multiple
+              onChange={(e) => {
+                const files = Array.from(e.target.files);
+                if (handleFileChange(type, files)) {
+                  setFileNames(files.map((file) => file.name) || null);
+                }
+              }}
+            />
+            <img
+              className="attachment-icon-button"
+              src={attachment}
+              onClick={handleClick}
+            />
+          </div>
+        )
+      )}
+
+
+      
     </div>
   );
 }
