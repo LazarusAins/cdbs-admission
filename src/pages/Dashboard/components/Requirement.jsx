@@ -318,7 +318,7 @@ function Requirement({
               <a href={parentQuestionnaire} download="parent-questionnaire">
                 <button
                   className="btn-blue btn btn-add"
-
+                  style={{ width: "230px" }}
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
@@ -330,11 +330,11 @@ function Requirement({
               <a href={recommendTeacher} download="recommendation-teacher">
                 <button
                   className="btn-blue btn btn-add"
-
+                  style={{ width: "230px" }}
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
-                  Teacher Form
+                  Class Adviser or Subject Teacher
                 </button>
               </a>
             ) : null}
@@ -345,7 +345,7 @@ function Requirement({
               >
                 <button
                   className="btn-blue btn btn-add reco-pad-left"
-
+                  style={{ width: "230px" }}
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
@@ -373,7 +373,7 @@ function Requirement({
         <div className="attachment-icon">
           <input
             ref={hiddenFileInput}
-            className="attach"
+            className="attach" style={{ marginTop: "70px", marginBottom: "70px"  }}
             type="file"
             accept=".png, .jpeg, .jpg, .pdf"
             multiple

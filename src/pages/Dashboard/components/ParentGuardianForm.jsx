@@ -188,6 +188,7 @@ function ParentGuardianForm({
                 placeholder="Family Name"
                 readOnly={!checked}
                 required={checked}
+                onKeyDown={(e) => e.preventDefault()}
               />
             </div>
             <div className="form-col fifth-occ">

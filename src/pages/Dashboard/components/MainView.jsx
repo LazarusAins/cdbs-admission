@@ -2272,6 +2272,7 @@ function MainView({ setPage, page }) {
     setAge("");
   };
 
+
   const handleDobChange = (e) => {
     // setIsLoading(true);
     if (personalData.dateOfBirth == null) return;
@@ -2854,6 +2855,7 @@ function MainView({ setPage, page }) {
                         className="form-textfield third-occ form-control"
                         placeholder="Calendar"
                         required
+                        onKeyDown={(e) => e.preventDefault()}
                       />
                     </div>
                     <div className="form-col">
@@ -3407,17 +3409,31 @@ function MainView({ setPage, page }) {
                     </div>
                     <div className="form-col">
                       <p className="label-form ">School Year*</p>
-                      <input
+                      
+                      <select
                         onChange={(e) => {
                           handleChange(e, "academic");
                         }}
                         value={academicData.currentSchoolYear}
                         id="currentSchoolYear"
-                        type="text"
                         className="form-textfield third-occ form-control"
                         placeholder="School Year"
                         required
-                      />
+                      >
+                        <option value="" disabled>
+                          Select School Year
+                        </option>
+                        {Array.from({ length: 2024 - 2010 + 1 }, (_, i) => {
+                          const startYear = 2010 + i;
+                          const endYear = startYear + 1;
+                          const schoolYear = `${startYear}-${endYear}`;
+                          return (
+                            <option key={schoolYear} value={schoolYear}>
+                              {schoolYear}
+                            </option>
+                          );
+                        })}
+                      </select>
                     </div>
                   </div>
                   <div className="form-row">
@@ -3872,7 +3888,7 @@ function MainView({ setPage, page }) {
                           </div>
                         </div>
                         {family2Data.parentStatus == "Married" ||
-                        family2Data.parentStatus == "Separated" ||
+                        //family2Data.parentStatus == "Separated" ||
                         family2Data.parentStatus == "Widowed" ? (
                           <>
                             <div className="form-col">
