@@ -1171,19 +1171,21 @@ function MainView({ setPage, page }) {
   };
 
   const handleFileChange = (e) => {
+    const files = e.target.files; // Declare files here
     const allowedFormats = ["image/png", "image/jpeg", "application/pdf"];
-    const invalidFiles = files.filter(
+    
+    // Check for invalid files after initializing files
+    const invalidFiles = Array.from(files).filter(
       (file) => !allowedFormats.includes(file.type)
     );
-
+  
     if (invalidFiles.length > 0) {
-      alert("Incorrect file types has been uploaded");
+      alert("Incorrect file types have been uploaded");
     }
-
-    setSpecialFile(e.target.files);
-    const files = e.target.files;
+  
+    setSpecialFile(files); // Set the selected files in state
     const previews = [];
-
+  
     if (files.length > 0) {
       Array.from(files).forEach((file) => {
         const reader = new FileReader();
@@ -1194,18 +1196,19 @@ function MainView({ setPage, page }) {
             url: isPDF ? reader.result : reader.result, // PDF and image previews
             type: isPDF ? "pdf" : "image",
           });
-
+  
           // Update state once all previews are generated
           if (previews.length === files.length) {
             setFilePreviews(previews);
           }
         };
-
+  
         // Read files as data URLs for images and PDFs
         reader.readAsDataURL(file);
       });
     }
   };
+  
 
   const handleChange = (e, type, subtype) => {
     const { id, value } = e.target;
@@ -1513,47 +1516,26 @@ function MainView({ setPage, page }) {
 
   const handleSpecialConcernSubmission = async () => {
     setIsLoading(true);
-
-    if (!specialFile) {
-      setUploadStatus("Please select a file before uploading.");
-      return;
-    }
-
+  
     try {
-      // Step 1: Upload the file
-
-      // console.log(await metadataResponse.json());
-
       const formData = new FormData();
-
-      //  special_concern: specialConcernsData.specialConcern,
-      //       medical_condition: specialConcernsData.medicalCondition,
-      //       medication: specialConcernsData.medication,
-      //       intervention: specialConcernsData.intervention,
-
+  
+      // Append other fields to FormData
       formData.append("admission_id", admissionSelected);
       formData.append("bucket_name", "support_documents");
-      Array.from(specialFile).forEach((file) => {
-        formData.append("files", file); // "files" key is repeated for each file
-      });
-
       formData.append("special_concern", specialConcernsData.specialConcern);
-      formData.append(
-        "medical_condition",
-        specialConcernsData.medicalCondition
-      );
+      formData.append("medical_condition", specialConcernsData.medicalCondition);
       formData.append("medication", specialConcernsData.medication);
       formData.append("intervention", specialConcernsData.intervention);
-
-      // for (let specialFil of specialFile) {
-      //   console.log(
-      //     "File Details:",
-      //     specialFil.name,
-      //     specialFil.size,
-      //     specialFil.type
-      //   );
-      // }
-
+      
+      // Append files to FormData if any
+      if (specialFile && specialFile.length > 0) {
+        Array.from(specialFile).forEach((file) => {
+          formData.append("files", file); // Repeated "files" key for multiple files
+        });
+      }
+  
+      // Send POST request
       const fileUploadResponse = await fetch(
         "https://donboscoapi.vercel.app/api/admission/create_special_concern",
         {
@@ -1566,56 +1548,28 @@ function MainView({ setPage, page }) {
           body: formData,
         }
       );
-
+  
       if (!fileUploadResponse.ok) {
-        setUploadStatus("Failed to upload file.");
-        setSpecialFile(() => null);
-        setFilePreviews(() => []);
+        setUploadStatus("Failed to submit the form.");
+        setSpecialFile(null);
+        setFilePreviews([]);
+        setIsLoading(false);
         return;
       }
-
+  
       const fileUploadData = await fileUploadResponse.json();
-      console.log(JSON.stringify(fileUploadData));
-      // const uploadedFileUrl = fileData?.fileUrl; // Adjust this based on your API's response format
-
-      // console.log(uploadedFileUrl);
-
-      // Step 2: Send metadata
-      // const metadataResponse = await fetch(
-      //   "https://donboscoapi.vercel.app/api/admission/create_special_concern",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       "supabase-url": "https://srseiyeepchrklzxawsm.supabase.co/",
-      //       "supabase-key":
-      //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyc2VpeWVlcGNocmtsenhhd3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc5ODE2NjgsImV4cCI6MjAzMzU1NzY2OH0.WfcrXLHOj1aDt36XJ873SP8syg4I41rJgE_uV_X1vkU",
-      //     },
-      //     body: JSON.stringify({
-      //       admission_id: admissionSelected,
-      //       // supporting_documents: [uploadedFileUrl],
-      //       // bucket_name: "support_documents",
-      //       // file_url: uploadedFileUrl, // Include the uploaded file URL
-      //     }),
-      //   }
-      // );
-
-      // if (!metadataResponse.ok) {
-      //   setUploadStatus("Failed to save special concern.");
-      // } else {
-      //   setUploadStatus("Special concern saved successfully!");
-      // }
-      // console.log(`DATUM: ${JSON.stringify(fileData)}`);
-      // // console.log(uploadedFileUrl);
-      // setUploadStatus("File uploaded successfully!");
+      console.log("Submission Successful:", JSON.stringify(fileUploadData));
+      setUploadStatus("Form submitted successfully!");
     } catch (error) {
       console.error("Error:", error);
       setUploadStatus("An error occurred. Please try again.");
     }
-
-    console.log(uploadStatus);
+  
     setIsLoading(false);
   };
+  
+
+  
 
   const handleSchedCancellation = async (easId, cancelReason) => {
     setIsLoading(true);
@@ -3995,7 +3949,13 @@ function MainView({ setPage, page }) {
            Please enter <span>Learner Information</span>
           </h3> */}
             </div>
-
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setPage("survey");
+                handleSpecialConcernSubmission();
+              }}
+            >
             <div className="space-bet-form">
               <div className="form-container">
                 <h3 className="form-heading">Special Concerns</h3>
@@ -4143,9 +4103,9 @@ function MainView({ setPage, page }) {
                 </div>
                 <div
                   className="btn-blue next-btn"
-                  onClick={() => {
-                    setPage("survey");
+                  onClick={async () => {
                     handleSpecialConcernSubmission();
+                    setPage("survey");
                   }}
                 >
                   Next
@@ -4156,6 +4116,7 @@ function MainView({ setPage, page }) {
                 <p className="saved-text">SAved just now</p>
               </div>
             </div>
+            </form>
           </>
         );
 
