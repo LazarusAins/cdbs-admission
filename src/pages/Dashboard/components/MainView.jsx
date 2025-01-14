@@ -3851,6 +3851,7 @@ function MainView({ setPage, page }) {
                                 Please select parent status
                               </option>
                               <option value={"Married"}>Married</option>
+                              <option value={"Remarried"}>Remarried</option>
                               <option value={"Separated"}>Separated</option>
                               <option value={"Solo Parent"}>Solo Parent</option>
                               <option value={"Widowed"}>Widowed</option>
@@ -3858,7 +3859,7 @@ function MainView({ setPage, page }) {
                             </select>
                           </div>
                         </div>
-                        {family2Data.parentStatus == "Married" //||
+                        {family2Data.parentStatus == "Married" || family2Data.parentStatus == "Remarried"//||
                         //family2Data.parentStatus == "Separated" ||
                         //family2Data.parentStatus == "Widowed" ? 
                         ? (
