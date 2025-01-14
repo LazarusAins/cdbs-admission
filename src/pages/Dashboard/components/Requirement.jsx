@@ -298,7 +298,7 @@ function Requirement({
               </>
             ) : null}
 
-            {fileNames.map((el, i) => (
+            {/*fileNames.map((el, i) => (
               <div className="item-upload" key={i}>
                 <h2 className="file-text">{el}</h2>
                 <span
@@ -316,8 +316,31 @@ function Requirement({
                   X
                 </span>
               </div>
+            ))*/}
+            {fileNames.map((el, i) => (
+              <div className="item-upload" key={i}>
+                <h2 className="file-text">{el}</h2>
+                <span
+                  className="delete-upload-item"
+                  onClick={() => {
+                    // Remove the selected file from state
+                    setFiles((prevFiles) => prevFiles.filter((_, index) => index !== i));
+                    setFileNames((prevFiles) => prevFiles.filter((_, index) => index !== i));
+                    
+                    // Reset the file input to allow reselection of the same file
+                    const fileInput = document.getElementById('file-input-id');
+                    if (fileInput) {
+                      fileInput.value = '';
+                    }
+
+                    // Optionally handle file change after deletion
+                    handleFileChange(type, files);
+                  }}
+                >
+                  X
+                </span>
+              </div>
             ))}
-            
 
 
 
@@ -575,6 +598,7 @@ function Requirement({
               className="attach"
               style={{ marginTop: "70px", marginBottom: "70px" }}
               type="file"
+              id="file-input-id"
               accept=".png, .jpeg, .jpg, .pdf"
               multiple
               onChange={(e) => {
