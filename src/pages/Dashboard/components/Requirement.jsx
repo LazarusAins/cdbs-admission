@@ -195,9 +195,9 @@ function Requirement({
                       <li>grade level</li>
                       <li>Learner Reference Number (LRN)</li>
                       <li>
-                        first quarter grades{" "}
+                        first to fourth quarter{" "}
                         <span style={{ fontWeight: "400 " }}>
-                          (at a minimum)
+                          (with final ratings)
                         </span>
                       </li>
                       <li>attendance records</li>
@@ -241,7 +241,18 @@ function Requirement({
               <>
                 <h2 className="email-text">
                   Please{" "}
-                  <strong>download the parent questionnaire format</strong> ,
+                  <strong>download the parent questionnaire format</strong>,
+                  fill it out completely, and{" "}
+                  <strong>upload the completed form</strong> here.
+                </h2>
+              </>
+            ) : null}
+
+            {type == "nonCatholicWaiver" ? (
+              <>
+                <h2 className="email-text">
+                  Please{" "}
+                  <strong>download the non-catholic waiver format</strong>,
                   fill it out completely, and{" "}
                   <strong>upload the completed form</strong> here.
                 </h2>
@@ -484,7 +495,7 @@ function Requirement({
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
-                  Non-Catholic Waiver
+                  Download Non-Catholic Waiver
                 </button>
               </a>
             ) : null}
