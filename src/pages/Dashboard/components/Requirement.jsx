@@ -179,7 +179,7 @@ function Requirement({
                 </h2>
               </>
             ) : null}
-            {type == "reportPresentCard" || type == "reportPreviousCard" ? (
+            {type == "reportPreviousCard" ? (
               <>
                 <h2 className="email-text">
                   Please ensure that you upload a{" "}
@@ -198,6 +198,45 @@ function Requirement({
                         first to fourth quarter{" "}
                         <span style={{ fontWeight: "400 " }}>
                           (with final ratings)
+                        </span>
+                      </li>
+                      <li>attendance records</li>
+                      <li>
+                        conduct grade{" "}
+                        <span style={{ fontWeight: "400 " }}>
+                          (if applicable).
+                        </span>
+                      </li>
+                    </ul>
+                  </strong>
+                </h2>
+                <h2 className="email-text">
+                  The report card must be an official, up-to-date copy
+                  reflecting the information mentioned above, ensuring{" "}
+                  <strong>all pages</strong> are included.
+                </h2>
+              </>
+            ) : null}
+
+          {type == "reportPresentCard"? (
+              <>
+                <h2 className="email-text">
+                  Please ensure that you upload a{" "}
+                  <strong>
+                    clear copy of your child’s official report card
+                  </strong>{" "}
+                  , which should include the following details:
+                </h2>
+                <h2 className="email-text">
+                  <strong>
+                    <ul>
+                      <li>learner’s full name</li>
+                      <li>grade level</li>
+                      <li>Learner Reference Number (LRN)</li>
+                      <li>
+                        first quarter grades{" "}
+                        <span style={{ fontWeight: "400 " }}>
+                          (at a minimum)
                         </span>
                       </li>
                       <li>attendance records</li>
