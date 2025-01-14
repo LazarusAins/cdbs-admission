@@ -3841,9 +3841,10 @@ function MainView({ setPage, page }) {
                             </select>
                           </div>
                         </div>
-                        {family2Data.parentStatus == "Married" ||
+                        {family2Data.parentStatus == "Married" //||
                         //family2Data.parentStatus == "Separated" ||
-                        family2Data.parentStatus == "Widowed" ? (
+                        //family2Data.parentStatus == "Widowed" ? 
+                        ? (
                           <>
                             <div className="form-col">
                               <p className="label-form">Wedding Type*</p>
