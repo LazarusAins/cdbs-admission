@@ -16,7 +16,7 @@ import { jwtVerify, SignJWT } from "jose";
 import { Modal, Button, Form } from "react-bootstrap";
 import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
-
+import StatusCircles from "./Legends"
 function MainView({ setPage, page }) {
   const [greeting, setGreeting] = useState("");
   const [cancelReasonString, setCancelReasonString] = useState("");
@@ -2623,9 +2623,11 @@ function MainView({ setPage, page }) {
                         </h4>
                       </div>
                     </div>
+                    
                   </section>
                 ) : null}
               </div>
+              
             ) : (
               <div className="center-main">
                 <div className="no-applications-container">
@@ -2644,8 +2646,22 @@ function MainView({ setPage, page }) {
                 >
                   Add Applicant
                 </div>
+                
               </div>
+              
             )}
+            
+            <div className='main-section mobile-main' style={{
+    borderBottom: 'none', // Remove border
+    boxShadow: 'none',    // Remove shadow
+    textDecoration: 'none', // Remove underline
+  }}
+>
+              <section className="applicant-list-section"></section>
+              <section className="status-list-section">
+                <StatusCircles />
+              </section>
+            </div>
           </>
         );
 
@@ -2665,6 +2681,7 @@ function MainView({ setPage, page }) {
                   Online Application Form
                 </h2>
               </div>
+              
               {/* <h3>
            Please enter <span>Learner Information</span>
           </h3> */}
