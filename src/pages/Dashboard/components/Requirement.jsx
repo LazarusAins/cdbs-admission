@@ -582,6 +582,7 @@ function Requirement({
                 if (handleFileChange(type, files)) {
                   setFileNames(files.map((file) => file.name) || null);
                 }
+                e.target.value = '';
               }}
             />
             <img
