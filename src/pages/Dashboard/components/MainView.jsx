@@ -2520,7 +2520,7 @@ function MainView({ setPage, page }) {
                         >
                           <span>Register in the Admission Portal</span>
                           <span className="desc-subtext">
-                            admissions.caritasdonboscoschool@edu.ph
+                            admissionportal-cdbs.vercel.app
                           </span>
                         </div>
                         <div
@@ -5252,13 +5252,13 @@ function MainView({ setPage, page }) {
                   <img src={back} onClick={() => setPage("main")} />
                   <h1>Account Information</h1>
                 </div>
-                <button
+                {/*<button
                   className="btn-blue btn btn-add"
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
                   Confirm
-                </button>
+                </button>*/}
               </div>
             </div>
             <div>

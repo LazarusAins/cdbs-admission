@@ -23,7 +23,9 @@ function Requirement({
   const [fileNames, setFileNames] = useState([]);
   const [files, setFiles] = useState([]);
   const { admissions } = useContext(AdmissionsContext);
-
+  const documentStatus = admissions?.["admissionsArr"]?.[dataIndex]?.['db_admission_table']?.["db_required_documents_table"]?.[0]?.["document_status"] || '';
+  const isPendingOrAccepted = documentStatus && (documentStatus === "pending" || documentStatus === "accepted");
+  console.log(documentStatus);
   const hiddenFileInput = useRef(null);
   let uploadedFiles = [];
   let type;
@@ -379,12 +381,47 @@ function Requirement({
                   Download Questionnaire
                 </button>
               </a>
+              
             ) : null}
             {mainTitle === "Recommendation Letter" ? (
               <a href={recommendTeacher} download="recommendation-teacher">
                 <button
-                  className="btn-blue btn btn-add"
+                  className={`btn-blue btn btn-add ${isPendingOrAccepted ? "disabled" : ""}`}
                   style={{ width: "230px" }}
+                  onClick={async (e) => {
+                    //e.preventDefault();
+                    if(isPendingOrAccepted){
+                      e.preventDefault();
+                    }else{
+                      try{
+                        const formData = new FormData();
+                        const admissionId = admissions["admissionsArr"][dataIndex]["admission_id"];
+                        formData.append("admission_id",admissionId);
+                        formData.append("requirements_type",5);
+                        const fileUploadResponse = await fetch(
+                          "https://donboscoapi.vercel.app/api/admission/upload_requirements",
+                          {
+                            method: "POST",
+                            headers: {
+                              "supabase-url": "https://srseiyeepchrklzxawsm.supabase.co/",
+                              "supabase-key":
+                                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyc2VpeWVlcGNocmtsenhhd3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc5ODE2NjgsImV4cCI6MjAzMzU1NzY2OH0.WfcrXLHOj1aDt36XJ873SP8syg4I41rJgE_uV_X1vkU",
+                            },
+                            body: formData,
+                          }
+                        );
+                
+                        // Log the response for debugging purposes
+                        console.log(await fileUploadResponse.json());
+                        fetchAdmissions();
+                      }catch (error) {
+                        console.error("Error uploading file:", error);
+                      }
+                    }
+                    
+              
+                  }
+                }
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
@@ -398,8 +435,40 @@ function Requirement({
                 download="recommendation-school-head-counselor"
               >
                 <button
-                  className="btn-blue btn btn-add reco-pad-left"
+                  className={`btn-blue btn btn-add reco-pad-left ${isPendingOrAccepted ? "disabled" : ""}`}
                   style={{ width: "230px" }}
+                  onClick={async (e) => {
+                    if(isPendingOrAccepted){
+                      e.preventDefault();
+                    }else{
+                      try{
+                        const formData = new FormData();
+                        const admissionId = admissions["admissionsArr"][dataIndex]["admission_id"];
+                        formData.append("admission_id",admissionId);
+                        formData.append("requirements_type",5);
+                        const fileUploadResponse = await fetch(
+                          "https://donboscoapi.vercel.app/api/admission/upload_requirements",
+                          {
+                            method: "POST",
+                            headers: {
+                              "supabase-url": "https://srseiyeepchrklzxawsm.supabase.co/",
+                              "supabase-key":
+                                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyc2VpeWVlcGNocmtsenhhd3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc5ODE2NjgsImV4cCI6MjAzMzU1NzY2OH0.WfcrXLHOj1aDt36XJ873SP8syg4I41rJgE_uV_X1vkU",
+                            },
+                            body: formData,
+                          }
+                        );
+                
+                        // Log the response for debugging purposes
+                        console.log(await fileUploadResponse.json());
+                        fetchAdmissions();
+                      }catch (error) {
+                        console.error("Error uploading file:", error);
+                      }
+                    }
+              
+                  }
+                }
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
