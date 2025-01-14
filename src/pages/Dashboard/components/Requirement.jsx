@@ -491,7 +491,7 @@ function Requirement({
               <a href={nonCatholicWaiver} download="non-catholic-waiver">
                 <button
                   className="btn-blue btn btn-add reco-pad-left"
-
+                  style={{ width: "230px" }}
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
