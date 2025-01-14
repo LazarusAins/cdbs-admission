@@ -578,7 +578,7 @@ function Requirement({
               accept=".png, .jpeg, .jpg, .pdf"
               multiple
               onChange={(e) => {
-                const files = Array.from(e.target.files);
+                const files = Array.from(e.target.files || []);
                 if (handleFileChange(type, files)) {
                   setFileNames(files.map((file) => file.name) || null);
                 }
