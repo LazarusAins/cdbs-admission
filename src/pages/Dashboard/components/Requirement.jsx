@@ -398,7 +398,7 @@ function Requirement({
               <a href={recommendTeacher} download="recommendation-teacher">
                 <button
                   className={`btn-blue btn btn-add ${isPendingOrAccepted ? "disabled" : ""}`}
-                  style={{ width: "230px" }}
+                  style={{ width: "295px" }}
                   onClick={async (e) => {
                     //e.preventDefault();
                     if(isPendingOrAccepted){
@@ -436,7 +436,7 @@ function Requirement({
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
-                  Class Adviser or Subject Teacher
+                  Download Class Adviser or Subject Teacher
                 </button>
               </a>
             ) : null}
@@ -447,7 +447,7 @@ function Requirement({
               >
                 <button
                   className={`btn-blue btn btn-add reco-pad-left ${isPendingOrAccepted ? "disabled" : ""}`}
-                  style={{ width: "230px" }}
+                  style={{ width: "290px" }}
                   onClick={async (e) => {
                     if(isPendingOrAccepted){
                       e.preventDefault();
@@ -483,7 +483,7 @@ function Requirement({
                   // onClick={addApplicant}
                   // onClick={() => setPage("personal-form")}
                 >
-                  School Head or Counselor
+                  Download School Head or Counselor
                 </button>
               </a>
             ) : null}
