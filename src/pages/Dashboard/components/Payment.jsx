@@ -172,6 +172,7 @@ function Payment({ setPage, dataIndex, applicationId, paymethodId }) {
                       });
 
                       if (result.isConfirmed) {
+                        handlePayment(paymentId);
                         handleRefNo();
                         // return;
                       } else {
@@ -229,7 +230,7 @@ function Payment({ setPage, dataIndex, applicationId, paymethodId }) {
             }
             // onClick={addApplicant}
             onClick={() => {
-              handlePayment(paymentId);
+              
               setShowModal(true);
             }}
           >
