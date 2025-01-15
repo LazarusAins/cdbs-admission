@@ -52,7 +52,7 @@ function StatusTracker({
         <div title="Pending" className="circle circle-pending">
           <img src={check} />
         </div>
-      ): !isUploadPending && !isUploadComplete? (
+      ): !isUploadPending && !isUploadComplete && isApplicationComplete?(
         <div title="Pending" className="circle circle-waiting">
           <img src={check} />
         </div>
