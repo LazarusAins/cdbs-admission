@@ -1,9 +1,9 @@
 import React from 'react';
 
-const StatusCircles = () => {
+/*const StatusCircles = () => {
   return (
     <div style={{ display: 'flex', gap: '50px', alignItems: 'center', marginTop: '-25px', marginBottom:'25px'}}>
-      {/* Green Circle with Text */}
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft:'50px' }}>
         <div
           style={{
@@ -18,7 +18,7 @@ const StatusCircles = () => {
         </span>
       </div>
 
-      {/* Yellow Circle with Text */}
+     
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <div
           style={{
@@ -35,5 +35,5 @@ const StatusCircles = () => {
     </div>
   );
 };
-
+*/
 export default StatusCircles;
