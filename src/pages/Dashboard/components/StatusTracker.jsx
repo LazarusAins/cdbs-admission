@@ -10,6 +10,7 @@ function StatusTracker({
   isPaymentComplete,
   isPaymentPending,
   isAssessmentSelected,
+  isPendingAssessment,
   isResultSent,
   isApplicationInReview,
   isApplicationCreated,
@@ -47,11 +48,15 @@ function StatusTracker({
         <div title="Please reupload" className="circle circle-reject">
           <img src={close} />
         </div>
-      ) : !isUploadComplete && isApplicationComplete ? (
+      ) : !isUploadPending ? (
         <div title="Pending" className="circle circle-pending">
           <img src={check} />
         </div>
-      ) : (
+      ): isUploadPending? (
+        <div title="Pending" className="circle circle-waiting">
+          <img src={check} />
+        </div>
+      ): (
         <div className="circle-outline">3</div>
       )}
       <div className="dash-line"></div>
@@ -59,19 +64,31 @@ function StatusTracker({
         <div title="Complete" className="circle">
           <img src={check} />
         </div>
-      ) : isPaymentPending ? (
+      ) : !isPaymentPending ? (
         <div title="Pending" className="circle circle-pending">
+          <img src={check} />
+        </div>
+      ) : isPaymentPending && !isPaymentComplete ? (
+        <div title="Pending" className="circle circle-waiting">
           <img src={check} />
         </div>
       ) : (
         <div className="circle-outline">4</div>
       )}
       <div className="dash-line"></div>
-      {isAssessmentSelected ? (
+      {isPendingAssessment ? (
         <div title="Complete" className="circle">
           <img src={check} />
         </div>
-      ) : (
+      ):!isAssessmentSelected ? (
+        <div title="pending" className="circle circle-pending">
+          <img src={check} />
+        </div>
+      ) : isAssessmentSelected && !isPendingAssessment ? (
+        <div title="pending" className="circle circle-waiting">
+          <img src={check} />
+        </div>
+      ): (
         <div className="circle-outline">5</div>
       )}
       <div className="dash-line"></div>
@@ -80,7 +97,7 @@ function StatusTracker({
           <img src={check} />
         </div>
       ) : isAssessmentPending ? (
-        <div title="Pending" className="circle circle-pending">
+        <div title="Pending" className="circle circle-waiting">
           <img src={check} />
         </div>
       ) : (

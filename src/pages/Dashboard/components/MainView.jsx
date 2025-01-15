@@ -122,6 +122,7 @@ function MainView({ setPage, page }) {
   let isPaymentComplete;
   let isPaymentPending;
   let isAssessmentSelected;
+  let isPendingAssessment;
   let isResultSent;
   let isResultPending;
   let isPassed;
@@ -352,6 +353,13 @@ function MainView({ setPage, page }) {
       admissions["admissionsArr"][dataIndex]["db_admission_table"][
         "paymethod_id"
       ] != null;
+
+    isPendingAssessment =admissions["admissionsArr"][dataIndex]["db_admission_table"][
+      "is_for_assessment"
+    ] &&
+    !admissions["admissionsArr"][dataIndex]["db_admission_table"][
+      "is_final_result"
+    ];
 
     isAssessmentSelected =
       admissions["admissionsArr"][dataIndex]["db_admission_table"][
@@ -2500,6 +2508,7 @@ function MainView({ setPage, page }) {
                       isPaymentPending={isPaymentPending}
                       isPaymentComplete={isPaymentComplete}
                       isAssessmentSelected={isAssessmentSelected}
+                      isPendingAssessment={isPendingAssessment}
                       isResultSent={isResultSent}
                       isApplicationCreated={
                         admissions["admissionsArr"][dataIndex][
@@ -3971,12 +3980,13 @@ function MainView({ setPage, page }) {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                setPage("survey");
-                if(specialConcernsData.specialConcern !='' && specialConcernsData.medicalCondition!='' && specialConcernsData.medication!=''
+                
+                //setPage("survey");
+                /*if(specialConcernsData.specialConcern !='' && specialConcernsData.medicalCondition!='' && specialConcernsData.medication!=''
                   && specialConcernsData.intervention!='' && specialFile.length >0
                 ){
                   handleSpecialConcernSubmission();
-                }
+                }*/
                 //
               }}
             >
@@ -4128,7 +4138,12 @@ function MainView({ setPage, page }) {
                 <div
                   className="btn-blue next-btn"
                   onClick={async () => {
-                    handleSpecialConcernSubmission();
+                    //handleSpecialConcernSubmission();
+                    if(specialConcernsData.specialConcern !='' && specialConcernsData.medicalCondition!='' && specialConcernsData.medication!=''
+                      && specialConcernsData.intervention!='' && specialFile.length >0
+                    ){
+                      handleSpecialConcernSubmission();
+                    }
                     setPage("survey");
                   }}
                 >
