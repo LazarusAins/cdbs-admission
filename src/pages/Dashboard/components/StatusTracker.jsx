@@ -48,7 +48,7 @@ function StatusTracker({
         <div title="Please reupload" className="circle circle-reject">
           <img src={close} />
         </div>
-      ) : !isUploadComplete && isApplicationComplete? (
+      ) : !isUploadPending && isApplicationComplete? (
         <div title="Pending" className="circle circle-pending">
           <img src={check} />
         </div>
