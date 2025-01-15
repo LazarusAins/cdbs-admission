@@ -3972,7 +3972,12 @@ function MainView({ setPage, page }) {
               onSubmit={(e) => {
                 e.preventDefault();
                 setPage("survey");
-                handleSpecialConcernSubmission();
+                if(specialConcernsData.specialConcern !='' && specialConcernsData.medicalCondition!='' && specialConcernsData.medication!=''
+                  && specialConcernsData.intervention!='' && specialFile.length >0
+                ){
+                  handleSpecialConcernSubmission();
+                }
+                //
               }}
             >
             <div className="space-bet-form">

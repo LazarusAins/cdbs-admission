@@ -399,11 +399,22 @@ hr {
   justify-content: center;
 }
 
+.circle-waiting {
+  display: flex;
+  height: 3.2rem;
+  width: 3.2rem;
+  background: #012169;
+  border-radius: 1000px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .circle-reject {
   display: flex;
   height: 3.2rem;
   width: 3.2rem;
-  background: red;
+  background: #c8102e;
   border-radius: 1000px;
   flex-direction: column;
   align-items: center;
