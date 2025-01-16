@@ -16,7 +16,7 @@ import { jwtVerify, SignJWT } from "jose";
 import { Modal, Button, Form } from "react-bootstrap";
 import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
-import StatusCircles from "./Legends"
+//import StatusCircles from "./Legends"
 function MainView({ setPage, page }) {
   const [greeting, setGreeting] = useState("");
   const [cancelReasonString, setCancelReasonString] = useState("");
@@ -2668,7 +2668,8 @@ function MainView({ setPage, page }) {
 >
               <section className="applicant-list-section"></section>
               <section className="status-list-section">
-                <StatusCircles />
+                {//<StatusCircles />
+                }
               </section>
             </div>
           </>
