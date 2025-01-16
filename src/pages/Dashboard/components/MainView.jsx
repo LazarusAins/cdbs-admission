@@ -2510,6 +2510,7 @@ function MainView({ setPage, page }) {
                       isAssessmentSelected={isAssessmentSelected}
                       isPendingAssessment={isPendingAssessment}
                       isResultSent={isResultSent}
+                      isPassed={isPassed}
                       isApplicationCreated={
                         admissions["admissionsArr"][dataIndex][
                           "db_admission_table"

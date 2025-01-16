@@ -383,6 +383,13 @@ hr {
   font-weight: 800;
 }
 
+
+.status-text-red {
+  color: #c8102e;
+  text-decoration: underline;
+  font-weight: 800;
+}
+
 .circle {
   display: flex;
   height: 3.2rem;
