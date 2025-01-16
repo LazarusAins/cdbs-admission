@@ -93,7 +93,7 @@ function StatusTracker({
         <div className="circle-outline">5</div>
       )}
       <div className="dash-line"></div>
-      {isResultSent && isPassed? (
+      {isPassed? (
         <div title="Complete" className="circle">
           <img src={check} />
         </div>
