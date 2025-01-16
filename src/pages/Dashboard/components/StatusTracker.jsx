@@ -17,7 +17,7 @@ function StatusTracker({
   isApplicationPending,
   isUploadCreated,
   isPaid,
-  isPassed
+  isPassed,
 }) {
   return (
     <div className="steps-container ">
@@ -93,15 +93,15 @@ function StatusTracker({
         <div className="circle-outline">5</div>
       )}
       <div className="dash-line"></div>
-      {isPassed? (
+      {isResultSent && isPassed ? (
         <div title="Complete" className="circle">
           <img src={check} />
         </div>
-      ) : !isResultSent ? (
+      ) : isPendingAssessment ? (
         <div title="Pending" className="circle circle-waiting">
           <img src={check} />
         </div>
-      ): isResultSent && !isPassed? (
+      ) : isResultSent && !isPassed? (
         <div title="Pending" className="circle circle-reject">
           <img src={close} />
         </div>
