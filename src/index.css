@@ -377,6 +377,12 @@ hr {
   font-weight: 800;
 }
 
+.status-text-blue {
+  color: #012169;
+  text-decoration: underline;
+  font-weight: 800;
+}
+
 .circle {
   display: flex;
   height: 3.2rem;

@@ -131,7 +131,7 @@ function MainView({ setPage, page }) {
 
   const getUserAdmissions = async () => {
     if (page == "main" || page == "upload") {
-      setIsLoading(true);
+      setIsLoading(false);
     }
     const response = await fetch(
       "https://donboscoapi.vercel.app/api/admission/get_user_admission",
@@ -161,6 +161,7 @@ function MainView({ setPage, page }) {
   };
 
   const updateGreeting = () => {
+    getUserAdmissions();
     const hour = new Date().getHours();
     let newGreeting = "";
     if (hour >= 5 && hour < 12) {
@@ -177,9 +178,8 @@ function MainView({ setPage, page }) {
 
   // Use useEffect to initialize the greeting and set up the interval
   useEffect(() => {
-    updateGreeting(); // Set initial greeting
+    updateGreeting(); 
     const timer = setInterval(updateGreeting, 10000); // Update every 10 seconds
-
     return () => clearInterval(timer); // Cleanup the interval on component unmount
   }, []);
 

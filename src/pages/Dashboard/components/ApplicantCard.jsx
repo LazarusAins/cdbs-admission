@@ -44,26 +44,26 @@ function ApplicantCard({
       !admissionData["db_admission_table"]["is_complete_view"] &&
       admissionData["db_admission_table"]["admission_status"] === "in review"
     ) {
-      return { text: "Application - In Review", color: "yellow" };
+      return { text: "Application - In Review", color: "blue" };
     } else if (
       !admissionData["db_admission_table"]["is_all_required_file_uploaded"] &&
       admissionData["db_admission_table"]["admission_status"] === "in review" &&
       admissionData["db_admission_table"]["db_required_documents_table"]
         .length !== 0
     ) {
-      return { text: "Requirements - In Review", color: "yellow" };
+      return { text: "Requirements - In Review", color: "blue" };
     } else if (
       admissionData["db_admission_table"]["is_for_assessment"] &&
       !admissionData["db_admission_table"]["is_final_result"]
     ) {
-      return { text: "Results - In Review", color: "yellow" };
+      return { text: "Results - Waiting", color: "blue" };
     } else if (admissionData["db_admission_table"]["is_final_result"]) {
       return { text: "Results - Available", color: "green" };
     } else if (
       admissionData["db_admission_table"]["db_exam_admission_schedule"].length >
       0
     ) {
-      return { text: "Exam - Scheduled", color: "green" };
+      return { text: "Exam - Scheduled", color: "blue" };
     } else if (
       admissionData["db_admission_table"]["is_application_created"] &&
       admissionData["db_admission_table"]["is_complete_view"] &&
@@ -77,7 +77,7 @@ function ApplicantCard({
       admissionData["db_admission_table"]["is_all_required_file_uploaded"] &&
       admissionData["db_admission_table"]["paymethod_id"] !== null
     ) {
-      return { text: "Payment - Pending", color: "yellow" };
+      return { text: "Payment - Pending", color: "blue" };
     } else if (
       admissionData["db_admission_table"]["is_application_created"] &&
       admissionData["db_admission_table"]["is_complete_view"] &&
@@ -226,9 +226,14 @@ function ApplicantCard({
             <p className="applicant-text">
               Status:{" "}
               <span
-                className={`status-text${
+                className={/*`status-text${
                   getStatusText()["color"] == "green" ? "-green" : ""
-                }`}
+                }`*/
+                 `status-text${
+                  getStatusText()["color"] === "green" ? "-green" : 
+                  getStatusText()["color"] === "blue" ? "-blue" : ""
+                }` 
+              }
               >
                 {getStatusText()["text"]}
               </span>
