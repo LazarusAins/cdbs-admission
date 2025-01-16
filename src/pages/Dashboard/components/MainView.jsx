@@ -4191,6 +4191,7 @@ function MainView({ setPage, page }) {
                   handleChange(obj, "survey", "addFactors");
                   handleChange(obj, "survey", "addHeard");
                 } else {
+                  await handleAgreementDeclaration();
                   await handleSurveySubmission();
                   await Swal.fire({
                     title: "Good job!",
@@ -4659,7 +4660,7 @@ function MainView({ setPage, page }) {
                       !declarationPackage || !declarationSupportingDoc
                         ? null
                         : async () => {
-                            await handleAgreementDeclaration();
+                            //await handleAgreementDeclaration();
 
                             setPage("personal-form");
                             setSpecialFile(() => null);
