@@ -44,51 +44,51 @@ function ApplicantCard({
       !admissionData["db_admission_table"]["is_complete_view"] &&
       admissionData["db_admission_table"]["admission_status"] === "in review"
     ) {
-      return { text: "Application - In Review", color: "blue" };
+      return { text: "Application - Awaiting approval", color: "blue" };
     } else if (
       !admissionData["db_admission_table"]["is_all_required_file_uploaded"] &&
       admissionData["db_admission_table"]["admission_status"] === "in review" &&
       admissionData["db_admission_table"]["db_required_documents_table"]
         .length !== 0
     ) {
-      return { text: "Requirements - In Review", color: "blue" };
+      return { text: "Requirements - Awaiting approval", color: "blue" };
     } else if (
       admissionData["db_admission_table"]["is_for_assessment"] &&
       !admissionData["db_admission_table"]["is_final_result"]
     ) {
-      return { text: "Results - Waiting", color: "blue" };
+      return { text: "Results - Awaiting approval", color: "blue" };
     } else if (admissionData["db_admission_table"]["is_final_result"]) {
       return { text: "Results - Available", color: "green" };
     } else if (
       admissionData["db_admission_table"]["db_exam_admission_schedule"].length >
       0
     ) {
-      return { text: "Exam - Scheduled", color: "blue" };
+      return { text: "Exam - Awaiting approval", color: "blue" };
     } else if (
       admissionData["db_admission_table"]["is_application_created"] &&
       admissionData["db_admission_table"]["is_complete_view"] &&
       admissionData["db_admission_table"]["is_all_required_file_uploaded"] &&
       admissionData["db_admission_table"]["is_paid"]
     ) {
-      return { text: "Schedule - Pending", color: "yellow" };
+      return { text: "Schedule - Ready to proceed", color: "yellow" };
     } else if (
       admissionData["db_admission_table"]["is_application_created"] &&
       admissionData["db_admission_table"]["is_complete_view"] &&
       admissionData["db_admission_table"]["is_all_required_file_uploaded"] &&
       admissionData["db_admission_table"]["paymethod_id"] !== null
     ) {
-      return { text: "Payment - Pending", color: "blue" };
+      return { text: "Payment - Awaiting approval", color: "blue" };
     } else if (
       admissionData["db_admission_table"]["is_application_created"] &&
       admissionData["db_admission_table"]["is_complete_view"] &&
       admissionData["db_admission_table"]["is_all_required_file_uploaded"]
     ) {
-      return { text: "Requirements - Complete", color: "green" };
+      return { text: "Requirements - Approved", color: "green" };
     } else if (
       !admissionData["db_admission_table"]["is_application_created"] ||
       !admissionData["db_admission_table"]["is_all_required_file_uploaded"]
     ) {
-      return { text: "Application - In Progress", color: "yellow" };
+      return { text: "Application - Ready to proceed", color: "yellow" };
     } else if (
       admissionData["db_admission_table"]["is_application_created"] &&
       admissionData["db_admission_table"]["is_complete_view"]
@@ -107,7 +107,7 @@ function ApplicantCard({
     }
 
     // Default case
-    return { text: "Application - In Progress", color: "yellow" };
+    return { text: "Application - Ready to proceed", color: "yellow" };
   };
 
   return (
