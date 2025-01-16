@@ -129,9 +129,9 @@ function MainView({ setPage, page }) {
 
   let requirementsRejectedArr = [];
 
-  const getUserAdmissions = async () => {
+  const getUserAdmissions = async (forLoading) => {
     if (page == "main" || page == "upload") {
-      setIsLoading(false);
+      setIsLoading(forLoading);
     }
     const response = await fetch(
       "https://donboscoapi.vercel.app/api/admission/get_user_admission",
@@ -161,7 +161,7 @@ function MainView({ setPage, page }) {
   };
 
   const updateGreeting = () => {
-    getUserAdmissions();
+    getUserAdmissions(false);
     const hour = new Date().getHours();
     let newGreeting = "";
     if (hour >= 5 && hour < 12) {
@@ -206,7 +206,7 @@ function MainView({ setPage, page }) {
         }),
       }
     );
-    getUserAdmissions();
+    getUserAdmissions(false);
     console.log(await response.json());
   };
 
@@ -2059,7 +2059,7 @@ function MainView({ setPage, page }) {
       }
     );
 
-    getUserAdmissions();
+    getUserAdmissions(true);
     // setIsLoading(false);
     const result = await response.json();
     console.log(result);
@@ -2314,7 +2314,7 @@ function MainView({ setPage, page }) {
     // });
     console.log(userId);
     handleSessionToken(sessionToken);
-    getUserAdmissions();
+    getUserAdmissions(true);
 
     if (page == "personal-form") {
       // handleDobChange();
