@@ -54,7 +54,7 @@ function ApplicantCard({
     const isResult = admissionTable["is_final_result"];
     const isPassed =admissionTable["is_passed"];
     // Check application creation and status
-    if (!isApplicationCreated && !isCompleteView && admissionStatus === "registration") {
+    if (!isApplicationCreated && !isCompleteView) {
       return { text: "Application - Ready to proceed", color: "yellow" };
     }
   

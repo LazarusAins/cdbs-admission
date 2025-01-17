@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.16",
     "bootstrap": "^5.3.3",
     "html2canvas": "^1.4.1",
     "jose": "^5.9.6",
