@@ -59,14 +59,25 @@ function ApplicantCard({
     }
   
     if (isApplicationCreated && !isCompleteView) {
-      return { text: "Application - Awaiting approval", color: "blue" };
+      
+      if (isApplicationCreated && !isAllRequiredFileUploaded && rejectCount ===0 ) {
+        return { text: "Requirements - Ready to proceed", color: "yellow" };
+      }
+      if (isApplicationCreated && isAllRequiredFileUploaded) {
+        return { text: "Application - Awaiting approval", color: "blue" };
+      }
+      
+      if (isApplicationCreated && rejectCount > 0) {
+        return { text: "Requirements - Rejected, revisions needed", color: "red" };
+      }
+      else{
+        return { text: "Application - Awaiting approval", color: "blue" };
+      }
+      
     }
   
     // Check requirements status
-    if (isApplicationCreated && isCompleteView) {
-      if (requiredDocuments.length === 0) {
-        return { text: "Requirements - Ready to proceed", color: "yellow" };
-      }
+    if (isApplicationCreated || isCompleteView) {
   
       if (pendingCount > 0 && rejectCount === 0) {
         return { text: "Requirements - Awaiting approval", color: "blue" };
