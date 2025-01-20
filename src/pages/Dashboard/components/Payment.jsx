@@ -127,13 +127,20 @@ function Payment({ setPage, dataIndex, applicationId, paymethodId }) {
 
             <hr className="payment-line" />
             {/* <h2>{formData.email}</h2> */}
-            <h3 style={{ fontWeight: "bold", textAlign: "center" }}>
-              Please enter{" "}
-              {paymethodId == 1 || paymentId == 1
-                ? "Sales Invoice"
-                : "Reference"}{" "}
-              Number:
-            </h3>
+            {
+              paymentId!=null?
+              <h3 style={{ fontWeight: "bold", textAlign: "center" }}>
+                Your payment is currently being verified. Please allow a moment for processing. Thank you for your patience!
+              </h3>:
+              <h3 style={{ fontWeight: "bold", textAlign: "center" }}>
+                Please enter{" "}
+                {paymethodId == 1 || paymentId == 1
+                  ? "Sales Invoice"
+                  : "Reference"}{" "}
+                Number:
+              </h3>
+            }
+            
             <div
               style={{
                 display: "flex",

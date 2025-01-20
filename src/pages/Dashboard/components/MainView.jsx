@@ -17,12 +17,12 @@ import { Modal, Button, Form } from "react-bootstrap";
 import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
 import { createClient } from "@supabase/supabase-js";
-
 //import StatusCircles from "./Legends"
 function MainView({ setPage, page }) {
 
   const supabase = createClient('https://srseiyeepchrklzxawsm.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyc2VpeWVlcGNocmtsenhhd3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc5ODE2NjgsImV4cCI6MjAzMzU1NzY2OH0.WfcrXLHOj1aDt36XJ873SP8syg4I41rJgE_uV_X1vkU');
 
+  const [realTimeChannel, setRealTimeChannel] = useState(null);
 
   const [greeting, setGreeting] = useState("");
   const [cancelReasonString, setCancelReasonString] = useState("");
@@ -114,7 +114,7 @@ function MainView({ setPage, page }) {
   const [cities, setCities] = useState([]);
   const [selectedIdCity, setSelectedIdCity] = useState([]);
   const [baranggays, setBaranggays] = useState([]);
-  const [realTimeChannel, setRealTimeChannel] = useState(null);
+  
   const userId = localStorage.getItem("userId");
 
   let isApplicationPending;
@@ -237,8 +237,6 @@ function MainView({ setPage, page }) {
       }
     };
   }, [realTimeChannel]);
-
-
 
   const updateGreeting = () => {
     //getUserAdmissions(false);
