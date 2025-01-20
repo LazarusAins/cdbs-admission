@@ -60,10 +60,10 @@ function ApplicantCard({
   
     if (isApplicationCreated && !isCompleteView) {
       
-      if (isApplicationCreated && !isAllRequiredFileUploaded && rejectCount ===0 ) {
+      if (isApplicationCreated && requiredDocuments.length==0 && rejectCount ===0 ) {
         return { text: "Requirements - Ready to proceed", color: "yellow" };
       }
-      if (isApplicationCreated && isAllRequiredFileUploaded) {
+      if (isApplicationCreated && requiredDocuments.length>0) {
         return { text: "Application - Awaiting approval", color: "blue" };
       }
       
