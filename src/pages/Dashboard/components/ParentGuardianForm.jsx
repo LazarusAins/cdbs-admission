@@ -272,7 +272,7 @@ function ParentGuardianForm({
                 <option value="" disabled>
                   Please select employment status
                 </option>
-                <option value="Employed">Employed1</option>
+                <option value="Employed">Employed</option>
                 <option value="Unemployed">Unemployed</option>
               </select>
               {/* <input
