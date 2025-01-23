@@ -18,7 +18,7 @@ import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
 import { createClient } from "@supabase/supabase-js";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/material_blue.css";
+import "../../../assets/themes/material_blue.css";
 
 //import StatusCircles from "./Legends"
 function MainView({ setPage, page }) {
@@ -2396,8 +2396,11 @@ function MainView({ setPage, page }) {
     // Update the calculated age in the state
     setAge(calculatedAge);
   
-    // Format the selected date as "YYYY-MM-DD"
-    const formattedDate = selectedDate.toISOString().split("T")[0];
+    // Manually format the date as "YYYY-MM-DD"
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(selectedDate.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
   
     // Update the personal data's dateOfBirth field
     handleChange({ target: { id: "dateOfBirth", value: formattedDate } }, "personal");
@@ -2405,6 +2408,7 @@ function MainView({ setPage, page }) {
     console.log(`Selected Date: ${formattedDate}`);
     console.log(`Age: ${calculatedAge}`);
   };
+  
   
   
   
