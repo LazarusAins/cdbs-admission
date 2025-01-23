@@ -17,6 +17,9 @@ import { Modal, Button, Form } from "react-bootstrap";
 import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
 import { createClient } from "@supabase/supabase-js";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/material_blue.css";
+
 //import StatusCircles from "./Legends"
 function MainView({ setPage, page }) {
 
@@ -2315,7 +2318,7 @@ function MainView({ setPage, page }) {
     setAge("");
   };
 
-
+  //original handleDobChange
   const handleDobChange = (e) => {
     // setIsLoading(true);
     if (personalData.dateOfBirth == null) return;
@@ -2354,6 +2357,81 @@ function MainView({ setPage, page }) {
     // setDob(e.target.value);
     // setIsLoading(false);
   };
+
+  const handleDobChangeWrapper = (selectedDates) => {
+    // If no date is selected, return early
+    if (!selectedDates || selectedDates.length === 0) {
+      console.error("No valid date selected.");
+      setAge(""); // Clear the age
+      return;
+    }
+  
+    const selectedDate = selectedDates[0]; // Get the first selected date
+    const today = new Date();
+  
+    // Check if the selected date is in the future
+    if (selectedDate > today) {
+      console.error("Selected date is in the future.");
+      setAge(""); // Reset the age if the date is invalid
+      return;
+    }
+  
+    // Calculate the age based on the selected date
+    let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
+    const monthDifference = today.getMonth() - selectedDate.getMonth();
+  
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < selectedDate.getDate())
+    ) {
+      calculatedAge--; // Adjust age if the current month/date is not yet reached
+    }
+  
+    if (calculatedAge < 0) {
+      console.error("Invalid age calculated.");
+      setAge(""); // Reset the age if invalid
+      return;
+    }
+  
+    // Update the calculated age in the state
+    setAge(calculatedAge);
+  
+    // Format the selected date as "YYYY-MM-DD"
+    const formattedDate = selectedDate.toISOString().split("T")[0];
+  
+    // Update the personal data's dateOfBirth field
+    handleChange({ target: { id: "dateOfBirth", value: formattedDate } }, "personal");
+  
+    console.log(`Selected Date: ${formattedDate}`);
+    console.log(`Age: ${calculatedAge}`);
+  };
+  
+  
+  
+
+
+  /*const handleDobChange = (selectedDates) => {
+    const selectedDate = selectedDates[0];
+    const today = new Date();
+  
+    if (selectedDate > today) {
+      setAge("");
+      return;
+    }
+  
+    let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
+    const monthDifference = today.getMonth() - selectedDate.getMonth();
+  
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < selectedDate.getDate())
+    ) {
+      calculatedAge--;
+    }
+  
+    setAge(calculatedAge >= 0 ? calculatedAge : "");
+  };*/
+  
 
   const clearModalRegister = () => {
     setSurname("");
@@ -2899,7 +2977,7 @@ function MainView({ setPage, page }) {
                     </div>
                   </div>
                   <div className="form-row">
-                    <div className="form-col">
+                    {/*<div className="form-col">
                       <label htmlFor="dateOfBirth" className="label-form">
                         Date of Birth*
                       </label>
@@ -2910,7 +2988,7 @@ function MainView({ setPage, page }) {
                         }}
                         // onChange={(e) => {
 
-                        // }}
+                        // 
                         max={today}
                         value={personalData.dateOfBirth}
                         id="dateOfBirth"
@@ -2920,7 +2998,33 @@ function MainView({ setPage, page }) {
                         required
                         onKeyDown={(e) => e.preventDefault()}
                       />
+                    </div>*/}
+                    <div className="form-col">
+                      <label htmlFor="dateOfBirth" className="label-form">
+                        Date of Birth*
+                      </label>
+                      <Flatpickr
+                        data-enable-time={false}
+                        options={{
+                          maxDate: "today", // Disable future dates
+                          disableMobile: true, // Use Flatpickr even on mobile devices
+                          dateFormat: "Y-m-d", // Display format: YYYY-MM-DD
+                          clear:true
+                        }}
+                        placeholder="Date of Birth"
+                        id="dateOfBirth"
+                        value={personalData.dateOfBirth || undefined} // Ensure proper value format
+                        onChange={handleDobChangeWrapper}
+                        onOpen={() => {
+                          handleChange({ target: { id: "dateOfBirth", value: null } }, "personal");
+                          setAge(0); // Reset age to 0 when the picker is opened
+                        }}
+                        className="form-textfield third-occ form-control"
+
+                      />
                     </div>
+
+
                     <div className="form-col">
                       <p className="label-form">Place of Birth*</p>
                       <input

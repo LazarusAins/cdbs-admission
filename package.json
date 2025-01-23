@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.47.16",
     "bootstrap": "^5.3.3",
+    "flatpickr": "^4.6.13",
     "html2canvas": "^1.4.1",
     "jose": "^5.9.6",
     "jspdf": "^2.5.2",
@@ -22,6 +23,7 @@
     "react-bootstrap": "^2.10.5",
     "react-datepicker": "^7.6.0",
     "react-dom": "^18.3.1",
+    "react-flatpickr": "^3.10.13",
     "react-loading": "^2.0.3",
     "react-router-dom": "^6.27.0",
     "sweetalert2": "^11.14.5"
