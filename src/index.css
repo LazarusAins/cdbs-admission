@@ -1625,9 +1625,9 @@ body {
 
 .payment-box h3 {
   display: inline-block;
-  width: 30rem;
+  width: 42rem;
   font-weight: normal;
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   text-align: center;
   color: #222;
   margin-bottom: 1.25rem;
@@ -1745,4 +1745,21 @@ body {
 
 .close-btn:hover {
   background-color: darkred; /* Darker red for hover effect */
+}
+
+
+
+
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  font-size: 25px;
+  color: #012169;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.close-icon:hover {
+  color: darkblue;
 }
