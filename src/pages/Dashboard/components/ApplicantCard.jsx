@@ -39,6 +39,7 @@ function ApplicantCard({
     );
   };
   const getStatusText = () => {
+    console.log("STATUS TEXT IS RUNNING")
     if (
       admissionData["db_admission_table"]["is_application_created"] &&
       !admissionData["db_admission_table"]["is_complete_view"] &&
@@ -123,20 +124,20 @@ function ApplicantCard({
       className={`applicant-card ${
         admissionId === selectedId ? "applicant-card-selected" : ""
       }`}
-      style={
-        type === "payment"
-          ? {
-              height: "12rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "4rem",
-              justifyContent: "start",
-              paddingBottom: "2rem",
-            }
-          : {}
-      }
+      // style={
+      //   type === "payment"
+      //     ? {
+      //         height: "12rem",
+      //         display: "flex",
+      //         alignItems: "center",
+      //         gap: "4rem",
+      //         justifyContent: "start",
+      //         paddingBottom: "2rem",
+      //       }
+      //     : {}
+      // }
     >
-      {type != "payment" ? (
+      {type !== "payment" ? (
         <div
           className="trash-btn"
           onClick={async () => {
@@ -222,7 +223,7 @@ function ApplicantCard({
           </span>
         </div>
         <div>
-          {type == "default" ? (
+          {type === "default" ? (
             <p className="applicant-text">
               Status:{" "}
               <span

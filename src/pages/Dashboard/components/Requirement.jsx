@@ -30,6 +30,8 @@ function Requirement({
   let uploadedFiles = [];
   let type;
   let docStatus;
+
+  // TODO: use map to minimize condition statement
   if (mainTitle == "Birth Certificate (PSA Copy)") {
     type = "birthCert";
     uploadedFiles = [
@@ -117,6 +119,7 @@ function Requirement({
     ];
   }
 
+  // TODO: can put it to util folder
   const handleFileChange = (type, file) => {
     const allowedTypes = ["image/png", "image/jpeg", "application/pdf"];
     const validFiles = file.filter((file) => allowedTypes.includes(file.type));

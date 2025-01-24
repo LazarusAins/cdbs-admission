@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { NATIONALITIES } from "../../../data";
 import ApplicantCard from "./ApplicantCard";
 import StatusTracker from "./StatusTracker";
 import check from "../../../assets/images/green-check.png";
@@ -16,8 +17,15 @@ import { jwtVerify, SignJWT } from "jose";
 import { Modal, Button, Form } from "react-bootstrap";
 import AdmissionsContext from "../../../context/AdmissionsContext";
 import ReactLoading from "react-loading";
+import useAuthStore from "../../../store/authentication/authStore";
 //import StatusCircles from "./Legends"
-function MainView({ setPage, page }) {
+
+
+
+function MainView() {
+  const [page, setPage] = useState("main")
+  const {user, handleSessionToken} = useAuthStore()
+
   const [greeting, setGreeting] = useState("");
   const [cancelReasonString, setCancelReasonString] = useState("");
   const [application, setApplication] = useState(0);
@@ -27,7 +35,7 @@ function MainView({ setPage, page }) {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [gradeLevel, setGradeLevel] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
   const { admissions, setAdmissions } = useContext(AdmissionsContext);
   const [show, setShow] = useState(false);
   const [admissionSelected, setAdmissionSelected] = useState("");
@@ -88,20 +96,6 @@ function MainView({ setPage, page }) {
   const [filePreviews, setFilePreviews] = useState([]);
   const [dataIndex, setDataIndex] = useState(null);
   const today = new Date().toISOString().split("T")[0];
-  const nationalities = [
-    "Filipino",
-    "American",
-    "Australian",
-    "British",
-    "Canadian",
-    "Chinese",
-    "Indian",
-    "Korean",
-    "Japanese",
-    "Singaporean",
-    "Vietnamese",
-    "Others",
-  ];
   const [provinces, setProvinces] = useState([]);
   const [selectedIdProvince, setSelectedIdProvince] = useState([]);
   const [cities, setCities] = useState([]);
@@ -171,14 +165,14 @@ function MainView({ setPage, page }) {
     } else {
       newGreeting = "Good evening";
     }
-     // Debug log
+    // Debug log
     setGreeting(newGreeting);
     console.log("Setting greeting to:", greeting);
   };
 
   // Use useEffect to initialize the greeting and set up the interval
   useEffect(() => {
-    updateGreeting(); 
+    updateGreeting();
     const timer = setInterval(updateGreeting, 10000); // Update every 10 seconds
     return () => clearInterval(timer); // Cleanup the interval on component unmount
   }, []);
@@ -354,12 +348,13 @@ function MainView({ setPage, page }) {
         "paymethod_id"
       ] != null;
 
-    isPendingAssessment =admissions["admissionsArr"][dataIndex]["db_admission_table"][
-      "is_for_assessment"
-    ] &&
-    !admissions["admissionsArr"][dataIndex]["db_admission_table"][
-      "is_final_result"
-    ];
+    isPendingAssessment =
+      admissions["admissionsArr"][dataIndex]["db_admission_table"][
+        "is_for_assessment"
+      ] &&
+      !admissions["admissionsArr"][dataIndex]["db_admission_table"][
+        "is_final_result"
+      ];
 
     isAssessmentSelected =
       admissions["admissionsArr"][dataIndex]["db_admission_table"][
@@ -962,6 +957,8 @@ function MainView({ setPage, page }) {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+
+  // DONE 
   const handleSlotCheck = async () => {
     setSlotsLoading(true);
     const response = await fetch(
@@ -977,8 +974,11 @@ function MainView({ setPage, page }) {
       }
     );
     const responseData = await response.json();
+
     const data = responseData["data"];
     console.log(data);
+
+    
     const isPreKinderSlotsAvailable =
       data.filter(
         (el) => el["level_applying"] == "Pre-Kinder" && el["slot_full"] == false
@@ -1181,19 +1181,19 @@ function MainView({ setPage, page }) {
   const handleFileChange = (e) => {
     const files = e.target.files; // Declare files here
     const allowedFormats = ["image/png", "image/jpeg", "application/pdf"];
-    
+
     // Check for invalid files after initializing files
     const invalidFiles = Array.from(files).filter(
       (file) => !allowedFormats.includes(file.type)
     );
-  
+
     if (invalidFiles.length > 0) {
       alert("Incorrect file types have been uploaded");
     }
-  
+
     setSpecialFile(files); // Set the selected files in state
     const previews = [];
-  
+
     if (files.length > 0) {
       Array.from(files).forEach((file) => {
         const reader = new FileReader();
@@ -1204,19 +1204,18 @@ function MainView({ setPage, page }) {
             url: isPDF ? reader.result : reader.result, // PDF and image previews
             type: isPDF ? "pdf" : "image",
           });
-  
+
           // Update state once all previews are generated
           if (previews.length === files.length) {
             setFilePreviews(previews);
           }
         };
-  
+
         // Read files as data URLs for images and PDFs
         reader.readAsDataURL(file);
       });
     }
   };
-  
 
   const handleChange = (e, type, subtype) => {
     const { id, value } = e.target;
@@ -1524,25 +1523,28 @@ function MainView({ setPage, page }) {
 
   const handleSpecialConcernSubmission = async () => {
     setIsLoading(true);
-  
+
     try {
       const formData = new FormData();
-  
+
       // Append other fields to FormData
       formData.append("admission_id", admissionSelected);
       formData.append("bucket_name", "support_documents");
       formData.append("special_concern", specialConcernsData.specialConcern);
-      formData.append("medical_condition", specialConcernsData.medicalCondition);
+      formData.append(
+        "medical_condition",
+        specialConcernsData.medicalCondition
+      );
       formData.append("medication", specialConcernsData.medication);
       formData.append("intervention", specialConcernsData.intervention);
-      
+
       // Append files to FormData if any
       if (specialFile && specialFile.length > 0) {
         Array.from(specialFile).forEach((file) => {
           formData.append("files", file); // Repeated "files" key for multiple files
         });
       }
-  
+
       // Send POST request
       const fileUploadResponse = await fetch(
         "https://donboscoapi.vercel.app/api/admission/create_special_concern",
@@ -1556,7 +1558,7 @@ function MainView({ setPage, page }) {
           body: formData,
         }
       );
-  
+
       if (!fileUploadResponse.ok) {
         setUploadStatus("Failed to submit the form.");
         setSpecialFile(null);
@@ -1564,7 +1566,7 @@ function MainView({ setPage, page }) {
         setIsLoading(false);
         return;
       }
-  
+
       const fileUploadData = await fileUploadResponse.json();
       console.log("Submission Successful:", JSON.stringify(fileUploadData));
       setUploadStatus("Form submitted successfully!");
@@ -1572,12 +1574,9 @@ function MainView({ setPage, page }) {
       console.error("Error:", error);
       setUploadStatus("An error occurred. Please try again.");
     }
-  
+
     setIsLoading(false);
   };
-  
-
-  
 
   const handleSchedCancellation = async (easId, cancelReason) => {
     setIsLoading(true);
@@ -1721,6 +1720,7 @@ function MainView({ setPage, page }) {
   };
 
   const getAdmissionData = async () => {
+    console.log("GET ADDMISSION DATA IS RUNNING")
     setIsLoading(true);
     console.log(`SELECTED: ${admissionSelected}`);
     if (page == "main") {
@@ -1798,14 +1798,14 @@ function MainView({ setPage, page }) {
         )
           ? ""
           : result["user"][0]["db_admission_table"]["religion"],
-        citizenship: nationalities.includes(
+        citizenship: NATIONALITIES.includes(
           result["user"][0]["db_admission_table"]["citizenship"]
         )
           ? result["user"][0]["db_admission_table"]["citizenship"]
           : result["user"][0]["db_admission_table"]["citizenship"] == null
           ? ""
           : "Others",
-        otherCitizenship: nationalities.includes(
+        otherCitizenship: NATIONALITIES.includes(
           result["user"][0]["db_admission_table"]["citizenship"]
         )
           ? ""
@@ -2234,7 +2234,6 @@ function MainView({ setPage, page }) {
     setAge("");
   };
 
-
   const handleDobChange = (e) => {
     // setIsLoading(true);
     if (personalData.dateOfBirth == null) return;
@@ -2281,22 +2280,7 @@ function MainView({ setPage, page }) {
     setGradeLevel("");
   };
 
-  const verifyToken = async (token) => {
-    try {
-      const { payload } = await jwtVerify(token, SECRET_KEY); // Use Uint8Array key
-      console.log("Decoded Payload:", payload); // Decoded UserContext object
-      return payload;
-    } catch (error) {
-      console.error("Invalid or expired token", error);
-      return null;
-    }
-  };
-
-  const handleSessionToken = async (sessionToken) => {
-    const decodedUser = await verifyToken(sessionToken);
-    console.log(decodedUser);
-    setUser(decodedUser);
-  };
+  // REMOVED VERIFY AND HANDLE SESSION
 
   useEffect(() => {
     if (user["registryType"] === "learner") {
@@ -2312,7 +2296,7 @@ function MainView({ setPage, page }) {
     //   // left: 0,
     //   behavior: "instant",
     // });
-    console.log(userId);
+    console.log("USER FROM MAINVIEW: ", user);
     handleSessionToken(sessionToken);
     getUserAdmissions(true);
 
@@ -2351,6 +2335,8 @@ function MainView({ setPage, page }) {
     motherData.dateOfBirth,
     guardianData.dateOfBirth,
   ]);
+
+  console.log("CURRENT PAGE: ", page)
 
   const renderContent = () => {
     {
@@ -2426,7 +2412,7 @@ function MainView({ setPage, page }) {
                 </div>
               </div>
               <div className="main-header">
-                <h1>Admission Application List</h1>
+                <h1 className="lg:text-[3.2rem] font-bold">Admission Application List</h1>
                 {admissions["admissionsArr"].length > 0 &&
                 user["registryType"] != "learner" ? (
                   <button
@@ -2487,7 +2473,7 @@ function MainView({ setPage, page }) {
                   </div>
                 </section>
                 {admissionSelected ? (
-                  <section className="status-tracking-section">
+                  <section className="flex ps-[5rem] pe-[4rem] pt-[4rem]">
                     <div className="tracking-section">
                       <div>
                         <h4 className="admission-step-ls">Registration</h4>
@@ -2542,7 +2528,10 @@ function MainView({ setPage, page }) {
                               ]["is_application_created"] &&
                                 admissions["admissionsArr"][dataIndex][
                                   "db_admission_table"
-                                ]["admission_status"] == "in review") ||
+                                ]["admission_status"] == "in review")
+                                
+                                ||
+                                
                               admissions["admissionsArr"][dataIndex][
                                 "db_admission_table"
                               ]["admission_status"] == "complete" ||
@@ -2632,11 +2621,9 @@ function MainView({ setPage, page }) {
                         </h4>
                       </div>
                     </div>
-                    
                   </section>
                 ) : null}
               </div>
-              
             ) : (
               <div className="center-main">
                 <div className="no-applications-container">
@@ -2655,26 +2642,28 @@ function MainView({ setPage, page }) {
                 >
                   Add Applicant
                 </div>
-                
               </div>
-              
             )}
-            
-            <div className='main-section mobile-main' style={{
-    borderBottom: 'none', // Remove border
-    boxShadow: 'none',    // Remove shadow
-    textDecoration: 'none', // Remove underline
-  }}
->
+
+            <div
+              className="main-section mobile-main"
+              style={{
+                borderBottom: "none", // Remove border
+                boxShadow: "none", // Remove shadow
+                textDecoration: "none", // Remove underline
+              }}
+            >
               <section className="applicant-list-section"></section>
               <section className="status-list-section">
-                {//<StatusCircles />
+                {
+                  //<StatusCircles />
                 }
               </section>
             </div>
           </>
         );
 
+        // TODO: we can create Form components for shared UI
       case "personal-form":
         return (
           <>
@@ -2691,7 +2680,7 @@ function MainView({ setPage, page }) {
                   Online Application Form
                 </h2>
               </div>
-              
+
               {/* <h3>
            Please enter <span>Learner Information</span>
           </h3> */}
@@ -2816,6 +2805,8 @@ function MainView({ setPage, page }) {
                       />
                     </div>
                   </div>
+
+                  {/* HERESDATE */}
                   <div className="form-row">
                     <div className="form-col">
                       <label htmlFor="dateOfBirth" className="label-form">
@@ -2865,6 +2856,8 @@ function MainView({ setPage, page }) {
                       />
                     </div>
                   </div>
+
+                  
                   <div className="form-row">
                     <div className="form-col">
                       <label htmlFor="sex" className="label-form">
@@ -2980,7 +2973,7 @@ function MainView({ setPage, page }) {
                         <option value="" disabled>
                           Select citizenship
                         </option>
-                        {nationalities.map((nationality) => (
+                        {NATIONALITIES.map((nationality) => (
                           <option key={nationality} value={nationality}>
                             {nationality}
                           </option>
@@ -3390,7 +3383,7 @@ function MainView({ setPage, page }) {
                     </div>
                     <div className="form-col">
                       <p className="label-form ">School Year*</p>
-                      
+
                       <select
                         onChange={(e) => {
                           handleChange(e, "academic");
@@ -3404,6 +3397,7 @@ function MainView({ setPage, page }) {
                         <option value="" disabled>
                           Select School Year
                         </option>
+                        {/* TODO: We can put this to util */}
                         {Array.from({ length: 2024 - 2010 + 1 }, (_, i) => {
                           const startYear = 2010 + i;
                           const endYear = startYear + 1;
@@ -3869,10 +3863,10 @@ function MainView({ setPage, page }) {
                             </select>
                           </div>
                         </div>
-                        {family2Data.parentStatus == "Married" || family2Data.parentStatus == "Remarried"//||
-                        //family2Data.parentStatus == "Separated" ||
-                        //family2Data.parentStatus == "Widowed" ? 
-                        ? (
+                        {family2Data.parentStatus == "Married" ||
+                        family2Data.parentStatus == "Remarried" ? ( //||
+                          //family2Data.parentStatus == "Separated" ||
+                          //family2Data.parentStatus == "Widowed" ?
                           <>
                             <div className="form-col">
                               <p className="label-form">Wedding Type*</p>
@@ -3981,7 +3975,7 @@ function MainView({ setPage, page }) {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                
+
                 //setPage("survey");
                 /*if(specialConcernsData.specialConcern !='' && specialConcernsData.medicalCondition!='' && specialConcernsData.medication!=''
                   && specialConcernsData.intervention!='' && specialFile.length >0
@@ -3991,135 +3985,135 @@ function MainView({ setPage, page }) {
                 //
               }}
             >
-            <div className="space-bet-form">
-              <div className="form-container">
-                <h3 className="form-heading">Special Concerns</h3>
-                <h4 className="form-sub-header">
-                  Please enter{" "}
-                  <span>Special Concern/s that might need attention</span>
-                </h4>{" "}
-                <div className="form-row">
-                  <div className="form-col">
-                    <p className="label-form">Special Concerns</p>
-                    <input
-                      id="specialConcern"
-                      onChange={(e) => {
-                        handleChange(e, "specialConcerns");
-                      }}
-                      type="text"
-                      className="form-textfield form-control"
-                      value={specialConcernsData.specialConcern}
-                    />
+              <div className="space-bet-form">
+                <div className="form-container">
+                  <h3 className="form-heading">Special Concerns</h3>
+                  <h4 className="form-sub-header">
+                    Please enter{" "}
+                    <span>Special Concern/s that might need attention</span>
+                  </h4>{" "}
+                  <div className="form-row">
+                    <div className="form-col">
+                      <p className="label-form">Special Concerns</p>
+                      <input
+                        id="specialConcern"
+                        onChange={(e) => {
+                          handleChange(e, "specialConcerns");
+                        }}
+                        type="text"
+                        className="form-textfield form-control"
+                        value={specialConcernsData.specialConcern}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-col">
-                    <p className="label-form">
-                      Medical/Development/Psychological Condition
-                    </p>
-                    <input
-                      value={specialConcernsData.medicalCondition}
-                      id="medicalCondition"
-                      onChange={(e) => {
-                        handleChange(e, "specialConcerns");
-                      }}
-                      type="text"
-                      className="form-textfield form-control"
-                    />
+                  <div className="form-row">
+                    <div className="form-col">
+                      <p className="label-form">
+                        Medical/Development/Psychological Condition
+                      </p>
+                      <input
+                        value={specialConcernsData.medicalCondition}
+                        id="medicalCondition"
+                        onChange={(e) => {
+                          handleChange(e, "specialConcerns");
+                        }}
+                        type="text"
+                        className="form-textfield form-control"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-col">
-                    <p className="label-form">Medication</p>
-                    <input
-                      id="medication"
-                      value={specialConcernsData.medication}
-                      onChange={(e) => {
-                        handleChange(e, "specialConcerns");
-                      }}
-                      type="text"
-                      className="form-textfield form-control"
-                    />
+                  <div className="form-row">
+                    <div className="form-col">
+                      <p className="label-form">Medication</p>
+                      <input
+                        id="medication"
+                        value={specialConcernsData.medication}
+                        onChange={(e) => {
+                          handleChange(e, "specialConcerns");
+                        }}
+                        type="text"
+                        className="form-textfield form-control"
+                      />
+                    </div>
+                    <div className="form-col">
+                      <p className="label-form">Intervention</p>
+                      <input
+                        id="intervention"
+                        onChange={(e) => {
+                          handleChange(e, "specialConcerns");
+                        }}
+                        value={specialConcernsData.intervention}
+                        type="text"
+                        className="form-textfield form-control"
+                      />
+                    </div>
                   </div>
-                  <div className="form-col">
-                    <p className="label-form">Intervention</p>
-                    <input
-                      id="intervention"
-                      onChange={(e) => {
-                        handleChange(e, "specialConcerns");
-                      }}
-                      value={specialConcernsData.intervention}
-                      type="text"
-                      className="form-textfield form-control"
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-col">
-                    <p className="label-form">Attach Supporting Document</p>
-                    <input
-                      // value={specialConcernsData.bucketName}
-                      type="file"
-                      onChange={handleFileChange}
-                      className="form-textfield form-control"
-                      multiple
-                      accept=".png, .jpeg, .jpg, .pdf"
-                    />
+                  <div className="form-row">
+                    <div className="form-col">
+                      <p className="label-form">Attach Supporting Document</p>
+                      <input
+                        // value={specialConcernsData.bucketName}
+                        type="file"
+                        onChange={handleFileChange}
+                        className="form-textfield form-control"
+                        multiple
+                        accept=".png, .jpeg, .jpg, .pdf"
+                      />
 
-                    {/* <button type="submit">Upload</button> */}
+                      {/* <button type="submit">Upload</button> */}
+                    </div>
                   </div>
-                </div>
-                {filePreviews.length > 0 ? (
-                  <div className="preview-container">
-                    {filePreviews.map((file, index) => (
-                      <div key={index} className="file-preview">
-                        {file.type === "image" ? (
-                          <img
-                            src={file.url}
-                            alt={file.name}
-                            style={{
-                              width: "150px",
-                              height: "200px",
-                              marginRight: "10px",
-                            }}
-                          />
-                        ) : file.type === "pdf" ? (
-                          <div
-                            style={{
-                              width: "150px",
-                              height: "200px",
-                              overflow: "hidden",
-                              border: "1px solid #ddd",
-                              position: "relative",
-                            }}
-                          >
-                            <iframe
+                  {filePreviews.length > 0 ? (
+                    <div className="preview-container">
+                      {filePreviews.map((file, index) => (
+                        <div key={index} className="file-preview">
+                          {file.type === "image" ? (
+                            <img
                               src={file.url}
-                              title={file.name}
+                              alt={file.name}
                               style={{
-                                width: "100%",
-                                height: "100%",
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                border: "none",
+                                width: "150px",
+                                height: "200px",
+                                marginRight: "10px",
                               }}
                             />
-                          </div>
-                        ) : (
-                          <p>{file.name}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-                {/* <div className="form-row">
+                          ) : file.type === "pdf" ? (
+                            <div
+                              style={{
+                                width: "150px",
+                                height: "200px",
+                                overflow: "hidden",
+                                border: "1px solid #ddd",
+                                position: "relative",
+                              }}
+                            >
+                              <iframe
+                                src={file.url}
+                                title={file.name}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                  border: "none",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <p>{file.name}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                  {/* <div className="form-row">
                   <div className="form-col">
                     <p className="label-form">Awards/Honors Received</p>
                     <input type="text" className="form-textfield" />
                   </div>
                 </div> */}
-                {/* <div className="form-row">
+                  {/* <div className="form-row">
                   <div className="form-col">
                     <p className="label-form">
                       Education System Contracting (ESC) Grantee
@@ -4127,35 +4121,39 @@ function MainView({ setPage, page }) {
                     <input type="text" className="form-textfield" />
                   </div>
                 </div> */}
-              </div>
+                </div>
 
-              <div className="form-container">
-                <div
-                  className="back-btn"
-                  onClick={() => setPage("family-form-2")}
-                >
-                  Back
+                <div className="form-container">
+                  <div
+                    className="back-btn"
+                    onClick={() => setPage("family-form-2")}
+                  >
+                    Back
+                  </div>
+                  <div
+                    className="btn-blue next-btn"
+                    onClick={async () => {
+                      //handleSpecialConcernSubmission();
+                      if (
+                        specialConcernsData.specialConcern != "" &&
+                        specialConcernsData.medicalCondition != "" &&
+                        specialConcernsData.medication != "" &&
+                        specialConcernsData.intervention != "" &&
+                        specialFile.length > 0
+                      ) {
+                        handleSpecialConcernSubmission();
+                      }
+                      setPage("survey");
+                    }}
+                  >
+                    Next
+                  </div>
                 </div>
-                <div
-                  className="btn-blue next-btn"
-                  onClick={async () => {
-                    //handleSpecialConcernSubmission();
-                    if(specialConcernsData.specialConcern !='' && specialConcernsData.medicalCondition!='' && specialConcernsData.medication!=''
-                      && specialConcernsData.intervention!='' && specialFile.length >0
-                    ){
-                      handleSpecialConcernSubmission();
-                    }
-                    setPage("survey");
-                  }}
-                >
-                  Next
+                <div className="saved-container colorless">
+                  {/* <img src={check} /> */}
+                  <p className="saved-text">SAved just now</p>
                 </div>
               </div>
-              <div className="saved-container colorless">
-                {/* <img src={check} /> */}
-                <p className="saved-text">SAved just now</p>
-              </div>
-            </div>
             </form>
           </>
         );
@@ -4258,7 +4256,7 @@ function MainView({ setPage, page }) {
                               )}
                             />
                             <span className="option-check">
-                              Word of Mouth (Friends, Family, Colleagues)
+                              Word of Mouth (Friends, Family,Colleagues)
                             </span>
                           </label>
                           <label style={{ color: "#222" }}>
@@ -4530,7 +4528,7 @@ function MainView({ setPage, page }) {
             </form>
           </>
         );
-
+        // Step 1
       case "agreement-declaration":
         return (
           <>
@@ -4566,7 +4564,7 @@ function MainView({ setPage, page }) {
                       Parent(s) or Guardian
                     </span>
                   </h4>{" "}
-                  <p className="form-sub-header subhead">
+                  <p className="form-sub-header subhead !text-[#909590]">
                     We understand that this application and admission to
                     <span style={{ color: "#012169" }}>
                       {" "}
@@ -4635,7 +4633,7 @@ function MainView({ setPage, page }) {
                         onChange={handleSuppCheckboxChange}
                         checked={declarationSupportingDoc}
                       />
-                      <span className="option-check">
+                      <span className="option-check ">
                         We declare to the best of our knowledge, the information
                         provided in this application form and the supporting
                         documents are complete and accurate.
@@ -4677,7 +4675,7 @@ function MainView({ setPage, page }) {
             </div>
           </>
         );
-
+        // Step 2
       case "upload":
         return (
           <>
@@ -5330,7 +5328,7 @@ function MainView({ setPage, page }) {
   };
 
   return (
-    <main className="main-container">
+    <main className="main-container w-[calc(100%_-_33rem)]">
       <Modal show={show} onHide={handleClose} id="modal-container" centered>
         {/* <Modal.Header closeButton>
           <Modal.Title>Applicant Information</Modal.Title>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import TextInput from "../../../components/ui/TextInput";
+import { handleDobChange } from "../../../utils";
 
 function SiblingForm({
   lastName,
@@ -9,67 +11,59 @@ function SiblingForm({
   occupation,
   office,
   handleChange,
+  index,
 }) {
   const [ageField, setAgeField] = useState("");
   const today = new Date().toISOString().split("T")[0];
 
-  const handleDobChange = (e) => {
-    // setIsLoading(true);
-    if (dateOfBirth == null) return;
-    console.log(e?.target.value);
-    console.log(dateOfBirth);
-    const selectedDate = new Date(dateOfBirth) ?? new Date(e.target.value);
-    const today = new Date();
+  // const handleDobChange = (e) => {
+  //   // setIsLoading(true);
+  //   if (dateOfBirth == null) return;
+  //   console.log(e?.target.value);
+  //   console.log(dateOfBirth);
+  //   const selectedDate = new Date(dateOfBirth) ?? new Date(e.target.value);
+  //   const today = new Date();
 
-    // console.log(`DAA: ${selectedDate}`);
+  //   // console.log(`DAA: ${selectedDate}`);
 
-    if (selectedDate > today) {
-      setAgeField("");
-      handleDobChange();
-      // return;
-    }
+  //   if (selectedDate > today) {
+  //     setAgeField("");
+  //     handleDobChange();
+  //     // return;
+  //   }
 
-    // Calculate age
-    let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
-    const monthDifference = today.getMonth() - selectedDate.getMonth();
+  //   // Calculate age
+  //   let calculatedAge = today.getFullYear() - selectedDate.getFullYear();
+  //   const monthDifference = today.getMonth() - selectedDate.getMonth();
 
-    // Adjust for months not yet reached
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < selectedDate.getDate())
-    ) {
-      calculatedAge--;
-    }
+  //   // Adjust for months not yet reached
+  //   if (
+  //     monthDifference < 0 ||
+  //     (monthDifference === 0 && today.getDate() < selectedDate.getDate())
+  //   ) {
+  //     calculatedAge--;
+  //   }
 
-    console.log(`AGE: ${calculatedAge}`);
-    setAgeField(() => (calculatedAge >= 0 ? calculatedAge : ""));
+  //   console.log(`AGE: ${calculatedAge}`);
+  //   setAgeField(() => (calculatedAge >= 0 ? calculatedAge : ""));
 
-    if (calculatedAge < 0) {
-      handleDobChange();
-    }
-    // setDob(e.target.value);
-    // setIsLoading(false);
-  };
-  useEffect(() => {
-    handleDobChange();
-  }, []);
+  //   if (calculatedAge < 0) {
+  //     handleDobChange();
+  //   }
+  //   // setDob(e.target.value);
+  //   // setIsLoading(false);
+  // };
+  // useEffect(() => {
+  //   handleDobChange();
+  // }, []);
 
   return (
     <div className="sibling-form-container">
-      <div className="form-row">
+      {/* <div className="form-row">
         <div className="form-col">
           <label htmlFor="name" className="label-form">
             Name*
           </label>
-          {/* const newSiblingData = {
-                          siblingFamilyName: "",
-                          siblingFirstName: "",
-                          siblingMiddleName: "",
-                          siblingDob: "",
-                          siblingAge: "",
-                          siblingOccupation: "",
-                          siblingBusinessOffice: "",
-                        }; */}
           <input
             value={lastName}
             id="siblingFamilyName"
@@ -124,17 +118,6 @@ function SiblingForm({
             required
           />
         </div>
-        {/* <div className="form-col fifth-occ">
-          <p className="label-form">Age*</p>
-          <input
-            id="siblingAge"
-            value={ageField}
-            type="text"
-            className="form-textfield fifth-occ form-control"
-            placeholder="Age"
-            readOnly
-          />
-        </div> */}
         <div className="form-col">
           <p className="label-form">Grade level/Course/Occupation* </p>
           <input
@@ -159,6 +142,44 @@ function SiblingForm({
             required
           />
         </div>
+      </div> */}
+      {/* Row 1 */}
+      <div className="grid grid-cols-3 grid-rows-1 gap-8">
+        <TextInput
+          label="Full Name"
+          name={lastName}
+          value={lastName}
+          placeholder="Family Name"
+          onChange={(e) => handleChange(e, index)}
+        />
+        <TextInput
+          name={firstName}
+          value={firstName}
+          placeholder="First Name"
+          onChange={(e) => handleChange(e, index)}
+        />
+        <TextInput
+          name={middleName}
+          value={middleName}
+          placeholder="Middle Name"
+          onChange={(e) => handleChange(e, index)}
+        />
+      </div>
+      {/* Row 2 */}
+      <div>
+        <TextInput
+          label="Date of Birth*"
+          type="date"
+          name="dateOfBirth"
+          value={dateOfBirth}
+          placeholder="Calendar"
+          onChange={(e) => {
+            handleDobChange(e, dateOfBirth, handleOnChangeData),
+            handleChange(e, index)
+
+          }}
+          required={true}
+        />
       </div>
     </div>
   );
