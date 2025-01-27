@@ -286,7 +286,7 @@ function Payment({ setPage, dataIndex, applicationId, paymethodId }) {
                 <button
                   type="button"
                   onClick={async () => {
-                    if (referenceNo.length != 0) {
+                    if (referenceNo.length !== 0 && fileNames.length !== 0) {
                       var result = await Swal.fire({
                         title: "Are you sure?",
                         text: `Please check if reference number is correct: ${referenceNo}`,
@@ -343,14 +343,14 @@ function Payment({ setPage, dataIndex, applicationId, paymethodId }) {
                   }}
                   style={{
                     padding: "8px 16px",
-                    backgroundColor: "#012169",
+                    backgroundColor: referenceNo.length === 0 || fileNames.length === 0 ? "#B0B0B0" : "#012169", // Gray when disabled
                     color: "#fff",
                     border: "none",
                     borderRadius: "4px",
-                    cursor: "pointer",
-                    width:"45rem",
-                    height:"4rem",
-                    fontSize:"12px"
+                    cursor: referenceNo.length === 0 || fileNames.length === 0 ? "not-allowed" : "pointer", // Change cursor when disabled
+                    width: "45rem",
+                    height: "4rem",
+                    fontSize: "12px",
                   }}
                 >
                   Submit
