@@ -154,7 +154,7 @@ function ApplicantCard({
           className="trash-btn"
           onClick={async () => {
             var result = await Swal.fire({
-              title: "Delete this application?",
+              title: "Delete this application1?",
               icon: "warning",
               showCancelButton: true,
               confirmButtonText: "Yes",
