@@ -242,7 +242,7 @@ function MainView({ setPage, page }) {
   }, [realTimeChannel]);
 
   const updateGreeting = () => {
-    //getUserAdmissions(false);
+    getUserAdmissions(false);
     //handleDobChange();
     const hour = new Date().getHours();
     let newGreeting = "";
@@ -261,7 +261,7 @@ function MainView({ setPage, page }) {
   // Use useEffect to initialize the greeting and set up the interval
   useEffect(() => {
     updateGreeting(); 
-    const timer = setInterval(updateGreeting, 10000); // Update every 10 seconds
+    const timer = setInterval(updateGreeting, 30000); // Update every 10 seconds
     return () => clearInterval(timer); // Cleanup the interval on component unmount
   }, []);
 
