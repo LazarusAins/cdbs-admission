@@ -26,7 +26,11 @@ function MainView({ setPage, page }) {
   const supabase = createClient('https://srseiyeepchrklzxawsm.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyc2VpeWVlcGNocmtsenhhd3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc5ODE2NjgsImV4cCI6MjAzMzU1NzY2OH0.WfcrXLHOj1aDt36XJ873SP8syg4I41rJgE_uV_X1vkU');
 
   const [realTimeChannel, setRealTimeChannel] = useState(null);
-
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() - 1);
+  maxDate.setMonth(11); // Set month to December (month 11)
+  maxDate.setDate(31);  // Set to the last day of the month (December 31)
+  maxDate.setHours(0, 0, 0, 0);  
   const [greeting, setGreeting] = useState("");
   const [cancelReasonString, setCancelReasonString] = useState("");
   const [application, setApplication] = useState(0);
@@ -44,7 +48,7 @@ function MainView({ setPage, page }) {
   const [schedules, setSchedules] = useState([]);
   const [scheduleForDay, setScheduleForDay] = useState([]);
   const [datesAvailable, setDateAvailable] = useState([]);
-  const [age, setAge] = useState("");
+  const [age, setAge] = useState(0);
   const [dob, setDob] = useState("");
   const [isFather, setIsFather] = useState(false);
   const [isMother, setIsMother] = useState(false);
@@ -52,6 +56,8 @@ function MainView({ setPage, page }) {
   const [specialFile, setSpecialFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState("");
   const [edit, setEdit] = useState(false);
+  const [dobHandled, setDobHandled] = useState(false);
+
   
   const [requirements, setRequirements] = useState([
     { type: "birthCert", file: [] },
@@ -139,7 +145,7 @@ function MainView({ setPage, page }) {
 
   let requirementsRejectedArr = [];
 
-  /*const getUserAdmissions = async (forLoading) => {
+  const getUserAdmissions = async (forLoading) => {
     if (page == "main" || page == "upload") {
       setIsLoading(forLoading);
     }
@@ -160,7 +166,6 @@ function MainView({ setPage, page }) {
     );
 
     const result = await response.json();
-    console.log(result);
     handleDobChange();
     setAdmissions(() => {
       return {
@@ -168,9 +173,9 @@ function MainView({ setPage, page }) {
       };
     });
     setIsLoading(false);
-  };*/
+  };
 
-  const getUserAdmissions = async (forLoading) => {
+ /* const getUserAdmissions = async (forLoading) => {
     if (page === "main" || page === "upload") {
       setIsLoading(forLoading);
     }
@@ -190,7 +195,10 @@ function MainView({ setPage, page }) {
     );
 
     const result = await response.json();
-    handleDobChange();
+    if((!dobHandled)){
+        handleDobChange();
+        setDobHandled(true);
+    }
     if (response.ok) {
       console.log(result);
       setAdmissions(() => ({
@@ -239,7 +247,7 @@ function MainView({ setPage, page }) {
         });
       }
     };
-  }, [realTimeChannel]);
+  }, [realTimeChannel]);*/
 
   const updateGreeting = () => {
     getUserAdmissions(false);
@@ -261,7 +269,7 @@ function MainView({ setPage, page }) {
   // Use useEffect to initialize the greeting and set up the interval
   useEffect(() => {
     updateGreeting(); 
-    const timer = setInterval(updateGreeting, 10000); // Update every 10 seconds
+    const timer = setInterval(updateGreeting, 30000); // Update every 10 seconds
     return () => clearInterval(timer); // Cleanup the interval on component unmount
   }, []);
 
@@ -2324,8 +2332,7 @@ function MainView({ setPage, page }) {
     if (personalData.dateOfBirth == null) return;
     console.log(e?.target.value);
     console.log(personalData.dateOfBirth);
-    const selectedDate =
-      new Date(personalData.dateOfBirth) ?? new Date(e.target.value);
+    const selectedDate = new Date(personalData.dateOfBirth) ?? new Date(e.target.value);
     const today = new Date();
 
     // console.log(`DAA: ${selectedDate}`);
@@ -3010,10 +3017,11 @@ function MainView({ setPage, page }) {
                       <Flatpickr
                         data-enable-time={false}
                         options={{
-                          maxDate: "today", // Disable future dates
+                          maxDate: maxDate, // Disable future dates
                           disableMobile: true, // Use Flatpickr even on mobile devices
                           dateFormat: "Y-m-d", // Display format: YYYY-MM-DD
-                          clear:true
+                          clear:true,
+                          yearSelectorType: "dropdown",
                         }}
                         placeholder="Date of Birth"
                         id="dateOfBirth"
@@ -3024,7 +3032,6 @@ function MainView({ setPage, page }) {
                           setAge(0); // Reset age to 0 when the picker is opened
                         }}
                         className="form-textfield third-occ form-control"
-
                       />
                     </div>
 
