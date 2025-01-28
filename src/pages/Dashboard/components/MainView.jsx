@@ -5343,13 +5343,15 @@ function MainView({ setPage, page }) {
                   </div>
                 </Modal.Body>
               </Modal>
-            ) : scheduleForDay.length == 0 ? <Modal
-            show={true
+            ) : schedules.length == 0 ? <Modal
+            show={schedules.length==0
             }
             id="modal-container"
             centered
           >
-            {/* <Modal.Header closeButton>
+            {
+            console.log('Hi'+scheduleForDay.length)
+            /* <Modal.Header closeButton>
       <Modal.Title>Applicant Information</Modal.Title>
     </Modal.Header> */}
             <Modal.Body>
