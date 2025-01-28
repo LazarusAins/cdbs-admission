@@ -1633,6 +1633,17 @@ body {
   margin-bottom: 1.25rem;
 }
 
+.payment-box h5 {
+  display: inline-block;
+  width: 42rem;
+  font-weight: lighter;
+  font-size: 1.55rem;
+  text-align: center;
+  color: #222;
+  margin-top: 3.25rem;
+  margin-bottom: 6.25rem;
+}
+
 .payment-line {
   width: 100%;
 }
