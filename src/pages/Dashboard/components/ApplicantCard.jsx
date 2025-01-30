@@ -58,7 +58,7 @@ function ApplicantCard({
       return { text: "Application - Ready to proceed", color: "yellow" };
     }
   
-    if (isApplicationCreated && !isCompleteView) {
+    if ((isApplicationCreated && !isCompleteView) || isCompleteView) {
       
       if (isApplicationCreated && requiredDocuments.length==0 && rejectCount ===0 ) {
         return { text: "Requirements - Ready to proceed", color: "yellow" };
@@ -77,7 +77,7 @@ function ApplicantCard({
     }
   
     // Check requirements status
-    if (isApplicationCreated || isCompleteView) {
+    if (isApplicationCreated && isCompleteView) {
   
       if (pendingCount > 0 && rejectCount === 0) {
         return { text: "Requirements - Awaiting approval", color: "blue" };
